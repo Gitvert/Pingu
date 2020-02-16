@@ -1,9 +1,15 @@
-import { Greeter } from "./greeter";
+import {Elo} from "./elo";
 import express from "express";
+import {Player} from "./player";
 const app = express();
 
 app.get('/', function (req, res) {
-   res.send(Greeter('Jesper'));
+   const p1: Player = new Player("Jesper", 1200);
+   const p2: Player = new Player("Jonas", 1000);
+
+   Elo.updateEloRating(p1, p2)
+
+   res.send(p1.rating + " " + p2.rating);
 });
 
 // start the express server
