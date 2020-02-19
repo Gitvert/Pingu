@@ -1,6 +1,7 @@
 import {Elo} from "./elo";
 import express from "express";
 import {Player} from "./player";
+import {DatabaseHandler} from "./database-handler";
 const app = express();
 
 app.get('/', function (req, res) {
@@ -15,4 +16,6 @@ app.get('/', function (req, res) {
 // start the express server
 app.listen( 8080, () => {
    console.log("Example app listening at port 8080");
+
+   const databaseHandler: DatabaseHandler = new DatabaseHandler();
 });
