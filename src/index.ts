@@ -11,15 +11,22 @@ app.use(bodyParser.json({}));
 
 const databaseHandler: DatabaseHandler = new DatabaseHandler();
 
-app.get('/', function (req, res) {
+app.get("/", (req, res) => {
    res.send("Coming soon");
 });
 
-app.post('/match', function (req, res) {
+app.get("/users", (req, res) => {
+
+   databaseHandler.fetchUsers();
+
+   res.send();
+});
+
+app.post("/match", (req, res) => {
 
    console.log(req.body);
 
-   const match: Match = new Match("'2020-02-20 19:43:20'", 1, 2);
+   const match: Match = new Match("2020-02-20 19:43:20", 1, 2);
 
    databaseHandler.recordMatch(match);
 
@@ -29,7 +36,13 @@ app.post('/match', function (req, res) {
    Elo.updateEloRating(p1, p2);
 
    res.send(p1.rating + " " + p2.rating);*/
-   res.send("Match recorded");
+   res.sendStatus(200);
+});
+
+app.post("/users/create", (req, res) => {
+   databaseHandler.createUser("lol");
+
+   res.sendStatus(200);
 });
 
 // start the express server
