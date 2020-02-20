@@ -15,20 +15,24 @@ app.get("/", (req, res) => {
    res.send("Coming soon");
 });
 
-app.get("/users", (req, res) => {
+app.get("/players", (req, res) => {
 
-   databaseHandler.fetchUsers();
-
-   res.send();
+   databaseHandler.fetchPlayers().then((players) => {
+      res.setHeader("Content-type", "application/json");
+      res.send(JSON.stringify(players));
+   }).catch(() => {
+      res.sendStatus(500);
+   });
 });
 
 app.post("/match", (req, res) => {
-
-   console.log(req.body);
-
    const match: Match = new Match("2020-02-20 19:43:20", 1, 2);
 
-   databaseHandler.recordMatch(match);
+   databaseHandler.recordMatch(match).then(() => {
+      res.sendStatus(200);
+   }).catch(() => {
+      res.sendStatus(500);
+   });
 
    /*const p1: Player = new Player("Jesper", 1200);
    const p2: Player = new Player("Jonas", 1000);
@@ -36,13 +40,14 @@ app.post("/match", (req, res) => {
    Elo.updateEloRating(p1, p2);
 
    res.send(p1.rating + " " + p2.rating);*/
-   res.sendStatus(200);
 });
 
 app.post("/users/create", (req, res) => {
-   databaseHandler.createUser("lol");
-
-   res.sendStatus(200);
+   databaseHandler.createUser("lol").then(() => {
+      res.sendStatus(200);
+   }).catch(() => {
+      res.sendStatus(500);
+   });
 });
 
 // start the express server
