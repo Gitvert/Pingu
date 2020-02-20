@@ -16,7 +16,6 @@ app.get("/", (req, res) => {
 });
 
 app.get("/players", (req, res) => {
-
    databaseHandler.fetchPlayers().then((players) => {
       res.setHeader("Content-type", "application/json");
       res.send(JSON.stringify(players));
@@ -25,28 +24,34 @@ app.get("/players", (req, res) => {
    });
 });
 
-app.post("/match", (req, res) => {
-   const match: Match = new Match("2020-02-20 19:43:20", 1, 2);
-
-   databaseHandler.recordMatch(match).then(() => {
-      res.sendStatus(200);
-   }).catch(() => {
-      res.sendStatus(500);
-   });
-
+app.get("/scoreboard", (req, res) => {
    /*const p1: Player = new Player("Jesper", 1200);
    const p2: Player = new Player("Jonas", 1000);
 
    Elo.updateEloRating(p1, p2);
 
    res.send(p1.rating + " " + p2.rating);*/
+
+   res.send("Coming soon");
+});
+
+app.post("/match", (req, res) => {
+   databaseHandler.recordMatch(new Match(new Date().toISOString(), req.body.winner, req.body.loser)).then(() => {
+      res.sendStatus(200);
+   }).catch((error) => {
+      if (error.toString().includes("FOREIGN KEY constraint failed")) {
+         res.sendStatus(400);
+      } else {
+         res.sendStatus(500);
+      }
+   });
 });
 
 app.post("/users/create", (req, res) => {
    databaseHandler.createUser(req.body.name).then(() => {
       res.sendStatus(200);
-   }).catch((err) => {
-      if (err.toString().includes("constraint failed")) {
+   }).catch((error) => {
+      if (error.toString().includes("UNIQUE constraint failed")) {
          res.sendStatus(409);
       } else {
          res.sendStatus(500);

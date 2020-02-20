@@ -12,7 +12,7 @@ export class Match {
 
     get winner(): number {
         return this.mWinner;
-}
+    }
 
     get loser(): number {
         return this.mLoser;

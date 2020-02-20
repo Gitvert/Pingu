@@ -12,11 +12,12 @@ export class DatabaseHandler {
     private mDatabase: Database;
 
     constructor() {
-        this.mDatabase = new Database("database.db", (err: Error) => {
-            if (err != undefined) {
-                console.error(err.message);
+        this.mDatabase = new Database("database.db", (error) => {
+            if (error != undefined) {
+                console.error(error.message);
             } else {
                 console.log("Database connection established successfully")
+                this.mDatabase.run("PRAGMA foreign_keys = ON;");
             }
         })
     }
@@ -38,10 +39,10 @@ export class DatabaseHandler {
 
     private fetch(query: string): Promise<any[]> {
         return new Promise((resolve, reject) => {
-            this.mDatabase.all(query, [], (err, rows: any[]) => {
-                if (err != undefined) {
-                    console.error(err.message);
-                    reject(err);
+            this.mDatabase.all(query, [], (error, rows: any[]) => {
+                if (error != undefined) {
+                    console.error(error.message);
+                    reject(error);
                 } else {
                     resolve(rows);
                 }
@@ -51,10 +52,10 @@ export class DatabaseHandler {
 
     private insert(query: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            this.mDatabase.run(query, (err => {
-                if (err != undefined) {
-                    console.error(err.message);
-                    reject(err);
+            this.mDatabase.run(query, (error => {
+                if (error != undefined) {
+                    console.error(error.message);
+                    reject(error);
                 } else {
                     resolve();
                 }
