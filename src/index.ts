@@ -43,10 +43,14 @@ app.post("/match", (req, res) => {
 });
 
 app.post("/users/create", (req, res) => {
-   databaseHandler.createUser("lol").then(() => {
+   databaseHandler.createUser(req.body.name).then(() => {
       res.sendStatus(200);
-   }).catch(() => {
-      res.sendStatus(500);
+   }).catch((err) => {
+      if (err.toString().includes("constraint failed")) {
+         res.sendStatus(409);
+      } else {
+         res.sendStatus(500);
+      }
    });
 });
 

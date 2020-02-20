@@ -22,7 +22,7 @@ export class DatabaseHandler {
     }
 
     public async createUser(name: string): Promise<void> {
-        return this.insert(`insert into players (name) values ('${name}')`);
+        return await this.insert(`insert into players (name) values ('${name}')`);
     }
 
     public async fetchPlayers(): Promise<Player[]> {
@@ -51,7 +51,7 @@ export class DatabaseHandler {
 
     private insert(query: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            this.mDatabase.each(query, (err => {
+            this.mDatabase.run(query, (err => {
                 if (err != undefined) {
                     console.error(err.message);
                     reject(err);
