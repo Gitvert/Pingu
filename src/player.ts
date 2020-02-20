@@ -1,9 +1,17 @@
 export class Player {
 
+    private mRating: number = 1200;
+    private mWins: number = 0;
+    private mLosses: number = 0;
+
     constructor(
-        private mName: string,
-        private mRating: number,
+        private mId: number,
+        private mName: string
     ) {}
+
+    public get id(): number {
+        return this.mId;
+    }
 
     public get name(): string {
         return this.mName;
@@ -13,6 +21,14 @@ export class Player {
         return this.mRating;
     }
 
+    public get wins(): number {
+        return this.mWins;
+    }
+
+    public get losses(): number {
+        return this.mLosses;
+    }
+
     public increaseRating(change: number): void {
         this.mRating += change;
     }
@@ -20,4 +36,6 @@ export class Player {
     public reduceRating(change: number): void {
         this.mRating -= change;
     }
+
+
 }
