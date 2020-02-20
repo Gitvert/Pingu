@@ -1,9 +1,9 @@
-drop table if exists users;
+drop table if exists players;
 drop table if exists matches;
 
-create table "users" (
+create table "players" (
 	"id" integer primary key,
-	"name" text not null
+	"name" text not null unique
 );
 
 create table "matches" (
@@ -11,6 +11,6 @@ create table "matches" (
 	"date" text not null,
 	"winner_user_id" integer not null,
 	"loser_user_id"	integer not null,
-	foreign key("winner_user_id") references "users"("id"),
-	foreign key("loser_user_id") references "users"("id")
+	foreign key("winner_user_id") references "players"("id"),
+	foreign key("loser_user_id") references "players"("id")
 );
