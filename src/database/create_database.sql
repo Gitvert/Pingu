@@ -9,8 +9,8 @@ create table "players" (
 create table "matches" (
     "id" integer primary key,
 	"date" text not null,
-	"winner_user_id" integer not null,
-	"loser_user_id"	integer not null,
-	foreign key("winner_user_id") references "players"("id"),
-	foreign key("loser_user_id") references "players"("id")
+	"winner" integer not null,
+	"loser"	integer not null,
+	foreign key("winner") references "players"("id"),
+	foreign key("loser") references "players"("id")
 );

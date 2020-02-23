@@ -1,11 +1,6 @@
 import {Database} from "sqlite3";
-import {Match} from "./match";
-import {Player} from "./player";
-
-export interface PlayerRecord {
-    id: number;
-    name: string;
-}
+import {Match} from "../match";
+import {MatchRecord, PlayerRecord} from "./records";
 
 export class DatabaseHandler {
 
@@ -22,19 +17,23 @@ export class DatabaseHandler {
         })
     }
 
+    public async fetchPlayers(): Promise<PlayerRecord[]> {
+        return await this.fetch(`select id, name from players`);
+    }
+
+    public async fetchMatches(): Promise<MatchRecord[]> {
+        return await this.fetch(
+            `select date, winner.name as winner, loser.name as loser from matches 
+            inner join players winner on matches.winner = winner.id inner join players loser on matches.loser = loser.id`
+        );
+    }
+
     public async createUser(name: string): Promise<void> {
         return await this.insert(`insert into players (name) values ('${name}')`);
     }
 
-    public async fetchPlayers(): Promise<Player[]> {
-        const playerRecords: PlayerRecord[] = await this.fetch(`select id, name from players`);
-        return playerRecords.map(record => {
-            return new Player(record.id, record.name);
-        });
-    }
-
     public async recordMatch(match: Match): Promise<void> {
-        return this.insert(`insert into matches (date, winner_user_id, loser_user_id) values ('${match.date}', ${match.winner}, ${match.loser})`);
+        return this.insert(`insert into matches (date, winner, loser) values ('${match.date}', ${match.winner}, ${match.loser})`);
     }
 
     private fetch(query: string): Promise<any[]> {
