@@ -18,15 +18,19 @@ export class DatabaseHandler {
     }
 
     public async fetchPlayers(): Promise<PlayerRecord[]> {
-        return await this.fetch(`select id, name from players`);
+        return this.fetch(`select id, name from players`);
     }
 
     public async fetchMatches(): Promise<MatchRecord[]> {
-        return await this.fetch(`select date, winner, loser from matches`);
+        return this.fetch(`select date, winner, loser from matches`);
+    }
+
+    public async fetchPlayerFromId(player: number): Promise<PlayerRecord> {
+        return this.fetchRow(`select id, name from players where id = ${player}`);
     }
 
     public async createUser(name: string): Promise<void> {
-        return await this.insert(`insert into players (name) values ('${name}')`);
+        return this.insert(`insert into players (name) values ('${name}')`);
     }
 
     public async recordMatch(match: Match): Promise<void> {
@@ -41,6 +45,19 @@ export class DatabaseHandler {
                     reject(error);
                 } else {
                     resolve(rows);
+                }
+            });
+        });
+    }
+
+    private fetchRow(query: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.mDatabase.get(query, [], (error, result: any) => {
+                if (error != undefined) {
+                    console.error(error.message);
+                    reject(error);
+                } else {
+                    resolve(result);
                 }
             });
         });

@@ -1,11 +1,13 @@
 import bodyParser from "body-parser";
 import express from "express";
+import request from "request";
 
 import {Elo} from "./elo";
 import {Player} from "./player";
 import {DatabaseHandler} from "./database/database-handler";
 import {Match} from "./match";
 
+const config = require("./pingu-config.json");
 const app = express();
 app.use(bodyParser.json({}));
 
@@ -65,8 +67,21 @@ app.get("/scoreboard", (req, res) => {
 });
 
 app.post("/match", (req, res) => {
-   databaseHandler.recordMatch(new Match(new Date().toISOString(), req.body.winner, req.body.loser)).then(() => {
+   const winnerId: number = req.body.winner;
+   const loserId: number = req.body.loser;
+
+   databaseHandler.recordMatch(new Match(new Date().toISOString(), winnerId, loserId)).then(() => {
       res.sendStatus(200);
+
+      databaseHandler.fetchPlayerFromId(winnerId).then((winner) => {
+         databaseHandler.fetchPlayerFromId(loserId).then((loser) => {
+            request.post(config.slackUrl, {
+               json: {
+                  text: `${winner.name} won over ${loser.name}`
+               }
+            });
+         });
+      });
    }).catch((error) => {
       if (error.toString().includes("FOREIGN KEY constraint failed")) {
          res.sendStatus(400);
