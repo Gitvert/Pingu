@@ -91,7 +91,7 @@ app.post("/match", (req, res) => {
    });
 });
 
-app.post("/users/create", (req, res) => {
+app.post("/player/create", (req, res) => {
    databaseHandler.createUser(req.body.name).then(() => {
       res.sendStatus(200);
    }).catch((error) => {
