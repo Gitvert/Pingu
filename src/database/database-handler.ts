@@ -22,10 +22,7 @@ export class DatabaseHandler {
     }
 
     public async fetchMatches(): Promise<MatchRecord[]> {
-        return await this.fetch(
-            `select date, winner.name as winner, loser.name as loser from matches 
-            inner join players winner on matches.winner = winner.id inner join players loser on matches.loser = loser.id`
-        );
+        return await this.fetch(`select date, winner, loser from matches`);
     }
 
     public async createUser(name: string): Promise<void> {

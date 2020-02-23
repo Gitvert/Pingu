@@ -31,11 +31,11 @@ export class Player {
 
     public increaseRating(change: number): void {
         this.mRating += change;
+        this.mWins++;
     }
 
     public reduceRating(change: number): void {
         this.mRating -= change;
+        this.mLosses++;
     }
-
-
 }

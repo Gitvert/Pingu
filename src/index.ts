@@ -16,33 +16,53 @@ app.get("/", (req, res) => {
 });
 
 app.get("/players", (req, res) => {
-   databaseHandler.fetchPlayers().then((players) => {
+   databaseHandler.fetchPlayers().then((records) => {
       res.setHeader("Content-type", "application/json");
-      res.send(JSON.stringify(players));
+      res.send(JSON.stringify(records));
    }).catch(() => {
       res.sendStatus(500);
    });
 });
 
 app.get("/matches", (req, res) => {
-   databaseHandler.fetchMatches().then((matches) => {
+   databaseHandler.fetchMatches().then((records) => {
       res.setHeader("Content-type", "application/json");
-      res.send(JSON.stringify(matches));
+      res.send(JSON.stringify(records));
    }).catch(() => {
       res.sendStatus(500);
    });
 });
 
-/*app.get("/scoreboard", (req, res) => {
-   const p1: Player = new Player("Jesper", 1200);
-   const p2: Player = new Player("Jonas", 1000);
+app.get("/scoreboard", (req, res) => {
+   databaseHandler.fetchPlayers().then((playerRecords) => {
+      databaseHandler.fetchMatches().then((matchRecords) => {
+         const players = new Map(playerRecords.map((record) => [record.id, new Player(record.id, record.name)]));
 
-   Elo.updateEloRating(p1, p2);
+         const matches: Match[] = matchRecords.map((record) => new Match(record.date, record.winner, record.loser));
 
-   res.send(p1.rating + " " + p2.rating);
+         matches.forEach((match) => {
+            Elo.updateEloRating(players.get(match.winner), players.get(match.loser));
+         });
 
-   res.send("Coming soon");
-});*/
+         const response = [...players.values()].map((player) => {
+            return {
+               id: player.id,
+               name: player.name,
+               rating: player.rating,
+               wins: player.wins,
+               losses: player.losses
+            };
+         });
+
+         res.setHeader("Content-type", "application/json");
+         res.send(JSON.stringify(response.sort((r1, r2) => r2.rating - r1.rating)));
+      }).catch(() => {
+         res.sendStatus(500);
+      });
+   }).catch(() => {
+      res.sendStatus(500);
+   });
+});
 
 app.post("/match", (req, res) => {
    databaseHandler.recordMatch(new Match(new Date().toISOString(), req.body.winner, req.body.loser)).then(() => {
@@ -68,7 +88,6 @@ app.post("/users/create", (req, res) => {
    });
 });
 
-// start the express server
 app.listen( 8080, () => {
    console.log("Example app listening at port 8080");
 });
