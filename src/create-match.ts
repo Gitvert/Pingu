@@ -15,9 +15,16 @@ export function createMatch(req: any, res: any, databaseHandler: DatabaseHandler
 
         databaseHandler.fetchPlayerFromId(winnerId).then((winner) => {
             databaseHandler.fetchPlayerFromId(loserId).then((loser) => {
+                let slackText;
+                if (winnerScore != undefined && loserScore != undefined) {
+                    slackText = `${winner.name} won over ${loser.name} with ${winnerScore} - ${loserScore}`;
+                } else {
+                    slackText = `${winner.name} won over ${loser.name}`;
+                }
+
                 request.post(config.slackUrl, {
                     json: {
-                        text: `${winner.name} won over ${loser.name} with ${winnerScore} - ${loserScore}`
+                        text: slackText
                     }
                 });
             });
