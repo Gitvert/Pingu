@@ -10,6 +10,11 @@ export function createMatch(req: any, res: any, databaseHandler: DatabaseHandler
     const winnerScore: number = req.body.winnerScore;
     const loserScore: number = req.body.loserScore;
 
+    if (!validateScore(winnerScore, loserScore)) {
+        res.sendStatus(400);
+        return;
+    }
+
     databaseHandler.recordMatch(new Match(new Date().toISOString(), winnerId, loserId, winnerScore, loserScore)).then(() => {
         res.sendStatus(200);
 
@@ -36,4 +41,32 @@ export function createMatch(req: any, res: any, databaseHandler: DatabaseHandler
             res.sendStatus(500);
         }
     });
+}
+
+function validateScore(winnerScore: number, loserScore: number): boolean {
+    if (winnerScore == undefined && loserScore == undefined) {
+        return true;
+    }
+
+    if ((winnerScore == undefined || loserScore == undefined)) {
+        return false;
+    }
+
+    if (winnerScore <= loserScore) {
+        return false;
+    }
+
+    if (winnerScore < 11) {
+        return false;
+    }
+
+    if (winnerScore > 11 && winnerScore - loserScore !== 2) {
+        return false;
+    }
+
+    if (winnerScore === 11 && loserScore > 9) {
+        return false;
+    }
+
+    return true;
 }
