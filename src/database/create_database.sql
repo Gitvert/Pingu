@@ -11,6 +11,8 @@ create table "matches" (
 	"date" text not null,
 	"winner" integer not null,
 	"loser"	integer not null,
+	"winner_score" integer,
+	"loser_score" integer,
 	foreign key("winner") references "players"("id"),
 	foreign key("loser") references "players"("id")
 );

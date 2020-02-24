@@ -22,7 +22,7 @@ export class DatabaseHandler {
     }
 
     public async fetchMatches(): Promise<MatchRecord[]> {
-        return this.fetch(`select date, winner, loser from matches`);
+        return this.fetch(`select date, winner, loser, winner_score, loser_score from matches`);
     }
 
     public async fetchPlayerFromId(player: number): Promise<PlayerRecord> {
@@ -34,7 +34,15 @@ export class DatabaseHandler {
     }
 
     public async recordMatch(match: Match): Promise<void> {
-        return this.insert(`insert into matches (date, winner, loser) values ('${match.date}', ${match.winner}, ${match.loser})`);
+        if (match.winnerScore != undefined && match.loserScore != undefined) {
+            return this.insert(
+                `insert into matches (date, winner, loser, winner_score, loser_score) values ('${match.date}', ${match.winner}, ${match.loser}, ${match.winnerScore}, ${match.loserScore})`
+            );
+        } else {
+            return this.insert(
+                `insert into matches (date, winner, loser) values ('${match.date}', ${match.winner}, ${match.loser})`
+            );
+        }
     }
 
     private fetch(query: string): Promise<any[]> {

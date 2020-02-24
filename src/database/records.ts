@@ -6,5 +6,7 @@ export interface PlayerRecord {
 export interface MatchRecord {
     date: string,
     winner: number,
-    loser: number
+    loser: number,
+    winner_score: number,
+    loser_score: number
 }
