@@ -29,7 +29,7 @@ export class DatabaseHandler {
         return this.fetchRow(`select id, name from players where id = ${player}`);
     }
 
-    public async createUser(name: string): Promise<void> {
+    public async createPlayer(name: string): Promise<void> {
         return this.insert(`insert into players (name) values ('${name}')`);
     }
 
