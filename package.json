@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts"
+    "watch": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
+    "once": "./node_modules/.bin/ts-node ./src/index.ts"
   },
   "author": "Jesper Evertsson",
   "license": "MIT",
