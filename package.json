@@ -2,11 +2,11 @@
   "name": "pingu",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
-    "once": "./node_modules/.bin/ts-node ./src/index.ts"
+    "watch": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/main.ts",
+    "once": "./node_modules/.bin/ts-node ./src/main.ts"
   },
   "author": "Jesper Evertsson",
   "license": "MIT",
