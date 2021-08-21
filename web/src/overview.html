@@ -1,0 +1,31 @@
+<template>
+  <require from="./style.css"></require>
+
+  <div class="page">
+    <div>
+      <img class="pingu-image-left" src="resources/Pingu.PNG" alt="Pingu logo">
+      <img class="pingu-image-right" src="resources/Pingu.PNG" alt="Pingu logo">
+    </div>
+    <div class="main-content">
+      <table if.bind="showScoreboard" class="scoreboard">
+        <tr>
+          <th>Player</th>
+          <th>Wins</th>
+          <th>Losses</th>
+          <th>Elo</th>
+        </tr>
+        <tr repeat.for="player of players">
+          <td>${player.name}</td>
+          <td>${player.wins}</td>
+          <td>${player.losses}</td>
+          <td>${player.elo}</td>
+        </tr>
+      </table>
+
+      <div class="footer">
+        <button click.delegate="reportResultClicked()">Report result</button>
+      </div>
+    </div>
+  </div>
+
+</template>
