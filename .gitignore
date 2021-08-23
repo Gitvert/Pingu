@@ -7,4 +7,4 @@ dist/
 
 *.db
 
-src/pingu-config.json
+**/pingu-config.json
