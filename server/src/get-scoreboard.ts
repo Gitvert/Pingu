@@ -20,6 +20,7 @@ export function getScoreboard(req: any, res: any, databaseHandler: DatabaseHandl
             }).sort((r1, r2) => r2.rating - r1.rating);
 
             res.setHeader("Content-type", "application/json");
+            res.setHeader("Access-Control-Allow-Origin", "*");
             res.send(JSON.stringify(responseBody));
         }).catch(() => {
             res.sendStatus(500);
