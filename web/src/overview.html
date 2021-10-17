@@ -1,31 +1,25 @@
 <template>
-  <require from="./style.css"></require>
+  <require from="./page"></require>
 
-  <div class="page">
-    <div>
-      <img class="pingu-image-left" src="resources/Pingu.PNG" alt="Pingu logo">
-      <img class="pingu-image-right" src="resources/Pingu.PNG" alt="Pingu logo">
-    </div>
-    <div if.bind="showScoreboard" class="main-content">
-      <table class="scoreboard">
-        <tr>
-          <th>Player</th>
-          <th>Wins</th>
-          <th>Losses</th>
-          <th>Rating</th>
-        </tr>
-        <tr repeat.for="row of scoreboard">
-          <td>${row.name}</td>
-          <td>${row.wins}</td>
-          <td>${row.losses}</td>
-          <td>${row.rating}</td>
-        </tr>
-      </table>
+  <page>
+    <table class="scoreboard">
+      <tr>
+        <th>Player</th>
+        <th>Wins</th>
+        <th>Losses</th>
+        <th>Rating</th>
+      </tr>
+      <tr repeat.for="row of scoreboard">
+        <td>${row.name}</td>
+        <td>${row.wins}</td>
+        <td>${row.losses}</td>
+        <td>${row.rating}</td>
+      </tr>
+    </table>
 
-      <div class="footer">
-        <button click.delegate="reportResultClicked()">Report result</button>
-      </div>
+    <div class="footer">
+      <button click.delegate="reportResultClicked()">Report result</button>
     </div>
-  </div>
+  </page>
 
 </template>
