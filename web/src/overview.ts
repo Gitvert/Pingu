@@ -1,3 +1,6 @@
+import {ScoreboardRow, ServerProxy} from "./serverProxy";
+import {computedFrom} from 'aurelia-framework';
+
 interface Player {
   name: string;
   wins: number;
@@ -11,6 +14,8 @@ enum State {
 }
 
 export class Overview {
+  private mScoreBoard: ScoreboardRow[] = [];
+
   public players: Player[] = [
     {name: "Evertsson", wins: 12, losses: 1, elo: 1500},
     {name: "Jesper Evertsson", wins: 12, losses: 1, elo: 3456},
@@ -24,11 +29,23 @@ export class Overview {
 
   public state: State = State.Default;
 
-  public reportResultClicked(): void {
-    console.log("OKLASOK");
+  public async activate(): Promise<void> {
+    this.mScoreBoard = await ServerProxy.getScoreboard();
+  }
+
+  public async reportResultClicked(): Promise<void> {
+    console.log(await ServerProxy.getMatches());
+    console.log(await ServerProxy.getPlayers());
+    console.log(await ServerProxy.getScoreboard());
+    this.state = State.RecordGame;
   }
 
   public get showScoreboard(): boolean {
     return this.state === State.Default;
+  }
+
+  @computedFrom("mScoreBoard")
+  public get scoreboard(): ScoreboardRow[] {
+    return this.mScoreBoard;
   }
 }
