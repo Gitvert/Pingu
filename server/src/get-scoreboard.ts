@@ -3,6 +3,7 @@ import {Player} from "./player";
 import {Match} from "./match";
 import {Elo} from "./elo";
 import {ScoreboardResponse} from "./responses";
+import {ResponseHelper} from "./ResponseHelper";
 
 export function getScoreboard(req: any, res: any, databaseHandler: DatabaseHandler) {
     databaseHandler.fetchPlayers().then((playerRecords) => {
@@ -19,9 +20,7 @@ export function getScoreboard(req: any, res: any, databaseHandler: DatabaseHandl
                 return new ScoreboardResponse(p.id, p.name, p.rating, p.wins, p.losses);
             }).sort((r1, r2) => r2.rating - r1.rating);
 
-            res.setHeader("Content-type", "application/json");
-            res.setHeader("Access-Control-Allow-Origin", "*");
-            res.send(JSON.stringify(responseBody));
+            ResponseHelper.send(res, responseBody);
         }).catch(() => {
             res.sendStatus(500);
         });
