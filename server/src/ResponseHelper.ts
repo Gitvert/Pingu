@@ -1,7 +1,6 @@
 export class ResponseHelper {
     static send(res: any, responseBody: any[]): void {
-        res.setHeader("Content-type", "application/json");
-        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.header("Content-type", "application/json");
         res.send(JSON.stringify(responseBody));
     }
 }

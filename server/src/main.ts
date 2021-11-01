@@ -12,6 +12,12 @@ app.use(bodyParser.json({}));
 
 const databaseHandler: DatabaseHandler = new DatabaseHandler();
 
+app.all("/*", (req, res, next) => {
+   res.header("Access-Control-Allow-Origin", "*");
+   res.header("Access-Control-Allow-Headers", "X-Requested-With, content-type");
+   next();
+});
+
 app.get("/", (req, res) => {
    res.send("Coming soon");
 });
