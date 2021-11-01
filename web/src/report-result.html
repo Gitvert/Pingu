@@ -1,7 +1,34 @@
 <template>
-  <require from="./page"></require>
+  <require from="./components/page"></require>
 
   <page>
+    <form submit.delegate="submitClicked()">
+    <div>
+      <label>
+        <select id="player1" value.bind="selectedPlayer1Id" required>
+          <option model.bind="null" value="">Select player</option>
+          <option repeat.for="player of players" model.bind="player.id">${player.name}</option>
+        </select>
+      </label>
 
+      <label>
+        <input type="number" min="0" max="99" value.bind="player1Score" required/>
+      </label>
+      -
+      <label>
+        <input type="number" min="0" max="99" value.bind="player2Score" required/>
+      </label>
+
+      <label>
+        <select id="player2" value.bind="selectedPlayer2Id" required>
+          <option model.bind="null" value="">Select player</option>
+          <option repeat.for="player of players" model.bind="player.id">${player.name}</option>
+        </select>
+      </label>
+    </div>
+    <div>
+      <button type="submit">Submit</button>
+    </div>
+    </form>
   </page>
 </template>

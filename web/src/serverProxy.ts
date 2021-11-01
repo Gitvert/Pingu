@@ -33,4 +33,8 @@ export class ServerProxy {
   static async getScoreboard(): Promise<ScoreboardRow[]> {
     return (await axios.get("http://localhost:8080/scoreboard")).data as ScoreboardRow[];
   }
+
+  static async postMatch(winner: number, loser: number, winnerScore: number, loserScore: number): Promise<void> {
+    await axios.post("http://localhost:8080/match", {winner, loser, winnerScore, loserScore});
+  }
 }
