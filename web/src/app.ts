@@ -10,8 +10,9 @@ export class App {
     config.options.pushState = true;
     config.options.root = '/';
     config.map([
-      { route: '', moduleId: PLATFORM.moduleName('overview'), title: 'Overview' },
-      { route: '/report-result', moduleId: PLATFORM.moduleName('report-result'), title: 'Report result' },
+      { route: '', redirect: 'overview' },
+      { route: '/overview', moduleId: PLATFORM.moduleName('./overview'), title: 'Overview' },
+      { route: '/report-result', moduleId: PLATFORM.moduleName('./report-result'), title: 'Report result' },
     ]);
 
     this.router = router;
