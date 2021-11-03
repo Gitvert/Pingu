@@ -6,7 +6,7 @@
     <div>
       <label>
         <select id="player1" value.bind="selectedPlayer1Id" required>
-          <option model.bind="null" value="">Select player</option>
+          <option model.bind="null" value="">Select winner</option>
           <option repeat.for="player of players" model.bind="player.id">${player.name}</option>
         </select>
       </label>
@@ -21,7 +21,7 @@
 
       <label>
         <select id="player2" value.bind="selectedPlayer2Id" required>
-          <option model.bind="null" value="">Select player</option>
+          <option model.bind="null" value="">Select loser</option>
           <option repeat.for="player of players" model.bind="player.id">${player.name}</option>
         </select>
       </label>

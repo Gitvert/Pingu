@@ -35,6 +35,6 @@ export class ServerProxy {
   }
 
   static async postMatch(winner: number, loser: number, winnerScore: number, loserScore: number): Promise<void> {
-    await axios.post("http://localhost:8080/match", {winner, loser, winnerScore, loserScore});
+    await axios.post("http://localhost:8080/match", {winner, loser, winnerScore, loserScore}).catch(() => alert("INVALID SCORE"));
   }
 }
