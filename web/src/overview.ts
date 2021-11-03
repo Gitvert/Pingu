@@ -19,9 +19,6 @@ export class Overview {
   }
 
   public async reportResultClicked(): Promise<void> {
-    console.log(await ServerProxy.getMatches());
-    console.log(await ServerProxy.getPlayers());
-    console.log(await ServerProxy.getScoreboard());
     this.state = State.RecordGame;
     this.mRouter.navigate("/report-result");
   }
