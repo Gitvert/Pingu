@@ -1,6 +1,8 @@
 import {Player, ServerProxy} from "./serverProxy";
-import {computedFrom} from "aurelia-framework";
+import {autoinject, computedFrom} from "aurelia-framework";
+import {Router} from "aurelia-router";
 
+@autoinject
 export class ReportResult {
 
   public selectedPlayer1Id: number;
@@ -10,17 +12,16 @@ export class ReportResult {
 
   private mPlayers: Player[]= [];
 
+  constructor(private mRouter: Router) {}
+
   public async activate(): Promise<void> {
     this.mPlayers = await ServerProxy.getPlayers();
   }
 
   public async submitClicked(): Promise<void> {
-    await ServerProxy.postMatch(
-      this.selectedPlayer1Id,
-      this.selectedPlayer2Id,
-      parseInt(this.player1Score, 10),
-      parseInt(this.player2Score, 10),
-    );
+    await ServerProxy.postMatch(this.selectedPlayer1Id, this.selectedPlayer2Id, parseInt(this.player1Score, 10), parseInt(this.player2Score, 10))
+      .then(() => this.mRouter.navigate(""))
+      .catch(() => alert("INVALID SCORE"));
   }
 
   @computedFrom("mPlayers")
