@@ -13,6 +13,7 @@ export class App {
       { route: '', redirect: 'overview' },
       { route: '/overview', moduleId: PLATFORM.moduleName('./overview'), title: 'Overview' },
       { route: '/report-result', moduleId: PLATFORM.moduleName('./report-result'), title: 'Report result' },
+      { route: '/match-history', moduleId: PLATFORM.moduleName('./match-history'), title: 'Match history' },
     ]);
 
     this.router = router;

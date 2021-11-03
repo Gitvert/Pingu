@@ -16,6 +16,10 @@ export class Overview {
     this.mRouter.navigate("/report-result");
   }
 
+  public async matchHistoryClicked(): Promise<void> {
+    this.mRouter.navigate("/match-history");
+  }
+
   @computedFrom("mScoreBoard")
   public get scoreboard(): ScoreboardRow[] {
     return this.mScoreBoard;
