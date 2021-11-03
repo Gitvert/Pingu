@@ -2,15 +2,9 @@ import {ScoreboardRow, ServerProxy} from "./serverProxy";
 import {autoinject, computedFrom} from 'aurelia-framework';
 import {Router} from "aurelia-router";
 
-enum State {
-  Default = 0,
-  RecordGame = 1
-}
-
 @autoinject
 export class Overview {
   private mScoreBoard: ScoreboardRow[] = [];
-  public state: State = State.Default;
 
   constructor(private mRouter: Router) {}
 
@@ -19,12 +13,7 @@ export class Overview {
   }
 
   public async reportResultClicked(): Promise<void> {
-    this.state = State.RecordGame;
     this.mRouter.navigate("/report-result");
-  }
-
-  public get showScoreboard(): boolean {
-    return this.state === State.Default;
   }
 
   @computedFrom("mScoreBoard")
