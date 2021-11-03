@@ -1,2 +1,22 @@
 <template>
+  <require from="./components/page"></require>
+
+  <page>
+    <table class="scoreboard">
+      <tr>
+        <th>Date</th>
+        <th>Loser</th>
+        <th>LoserScore</th>
+        <th>Winner</th>
+        <th>WinnerScore</th>
+      </tr>
+      <tr repeat.for="match of matches">
+        <td>${match.date}</td>
+        <td>${match.loser}</td>
+        <td>${match.loserScore}</td>
+        <td>${match.winner}</td>
+        <td>${match.winnerScore}</td>
+      </tr>
+    </table>
+  </page>
 </template>
