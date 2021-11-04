@@ -22,3 +22,16 @@
   height: 140px;
   float: right;
 }
+
+.report-result {
+  display: flex;
+  justify-content: center;
+}
+
+.report-result__item {
+  padding: 10px 10px;
+}
+
+.report-result__item__text {
+  width: 75px;
+}
