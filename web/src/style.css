@@ -7,26 +7,6 @@
   width: 50%;
 }
 
-.scoreboard {
-  width: 100%;
-  margin-bottom: 50px;
-}
-
-.scoreboard__header {
-  display: flex;
-  justify-content: space-between;
-}
-
-.scoreboard tr th {
-  background-color: green;
-  text-align: center;
-}
-
-.scoreboard tr td {
-  background-color: aqua;
-  text-align: center;
-}
-
 .footer {
   text-align: center;
 }
