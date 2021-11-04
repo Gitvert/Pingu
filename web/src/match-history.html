@@ -2,20 +2,18 @@
   <require from="./components/page"></require>
 
   <page>
-    <table class="scoreboard">
+    <table class="table table-light table-striped">
       <tr>
         <th>Date</th>
-        <th>Loser</th>
-        <th>LoserScore</th>
         <th>Winner</th>
-        <th>WinnerScore</th>
+        <th>Score</th>
+        <th>Loser</th>
       </tr>
       <tr repeat.for="match of matches">
         <td>${match.date}</td>
-        <td>${match.loser}</td>
-        <td>${match.loserScore}</td>
         <td>${match.winner}</td>
-        <td>${match.winnerScore}</td>
+        <td>${match.winnerScore} - ${match.loserScore}</td>
+        <td>${match.loser}</td>
       </tr>
     </table>
   </page>

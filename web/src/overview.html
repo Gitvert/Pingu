@@ -2,7 +2,7 @@
   <require from="./components/page"></require>
 
   <page>
-    <table class="scoreboard">
+    <table class="table table-light table-striped">
       <tr>
         <th>Player</th>
         <th>Wins</th>
@@ -18,8 +18,8 @@
     </table>
 
     <div class="footer">
-      <button click.delegate="reportResultClicked()">Report result</button>
-      <button click.delegate="matchHistoryClicked()">Match history</button>
+      <button class="btn btn-primary" click.delegate="reportResultClicked()">Report result</button>
+      <button class="btn btn-primary" click.delegate="matchHistoryClicked()">Match history</button>
     </div>
   </page>
 

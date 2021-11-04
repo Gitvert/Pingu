@@ -1,6 +1,9 @@
 import {Router, RouterConfiguration} from 'aurelia-router';
 import {PLATFORM} from 'aurelia-pal';
 
+require('bootstrap/dist/css/bootstrap.min.css');
+require('bootstrap/bootstrap.bundle');
+
 export class App {
   router: Router;
 
