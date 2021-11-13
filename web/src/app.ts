@@ -8,7 +8,6 @@ export class App {
   router: Router;
 
   configureRouter(config: RouterConfiguration, router: Router): void {
-    console.log("TEST");
     config.title = 'Pingu';
     config.options.pushState = true;
     config.options.root = '/';
