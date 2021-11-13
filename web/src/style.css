@@ -1,31 +1,30 @@
 .page {
-  height: 1000px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .main-content {
-  margin: auto;
-  width: 50%;
+  width: 1200px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.footer {
+.center {
   text-align: center;
 }
 
-.pingu-image-left {
+.pingu-image {
   width: 200px;
   height: 140px;
-  float: left;
-}
-
-.pingu-image-right {
-  width: 200px;
-  height: 140px;
-  float: right;
 }
 
 .report-result {
-  display: flex;
-  justify-content: center;
+  padding-top: 20px;
+}
+
+.create-player {
+  padding-top: 20px;
 }
 
 .report-result__item {

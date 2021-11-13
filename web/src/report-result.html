@@ -3,33 +3,33 @@
 
   <page>
     <form submit.delegate="submitClicked()">
-    <div class="report-result">
-      <label class="report-result__item">
-        <select id="player1" value.bind="selectedPlayer1Id" required>
-          <option model.bind="null" value="" hidden>Select winner</option>
-          <option repeat.for="player of players" model.bind="player.id">${player.name}</option>
-          <option click.delegate="createPlayer()">Create new player</option>
-        </select>
-      </label>
+      <div class="report-result">
+        <label class="report-result__item">
+          <select id="player1" value.bind="selectedPlayer1Id" required>
+            <option model.bind="null" value="" hidden>Select winner</option>
+            <option repeat.for="player of players" model.bind="player.id">${player.name}</option>
+            <option click.delegate="createPlayer()">Create new player</option>
+          </select>
+        </label>
 
-      <label class="report-result__item">
-        <input class="report-result__item__text" type="number" min="0" max="99" value.bind="player1Score" required/>
-      </label>
-      <label class="report-result__item">
-        <input class="report-result__item__text" type="number" min="0" max="99" value.bind="player2Score" required/>
-      </label>
+        <label class="report-result__item">
+          <input class="report-result__item__text" type="number" min="0" max="99" value.bind="player1Score" required/>
+        </label>
+        <label class="report-result__item">
+          <input class="report-result__item__text" type="number" min="0" max="99" value.bind="player2Score" required/>
+        </label>
 
-      <label class="report-result__item">
-        <select id="player2" value.bind="selectedPlayer2Id" required>
-          <option model.bind="null" value="" hidden>Select loser</option>
-          <option repeat.for="player of players" model.bind="player.id">${player.name}</option>
-          <option click.delegate="createPlayer()">Create new player</option>
-        </select>
-      </label>
-    </div>
-    <div class="d-grid gap-2 col-2 mx-auto">
-      <button class="btn btn-primary" type="submit">Submit</button>
-    </div>
+        <label class="report-result__item">
+          <select id="player2" value.bind="selectedPlayer2Id" required>
+            <option model.bind="null" value="" hidden>Select loser</option>
+            <option repeat.for="player of players" model.bind="player.id">${player.name}</option>
+            <option click.delegate="createPlayer()">Create new player</option>
+          </select>
+        </label>
+      </div>
+      <div class="center">
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </div>
     </form>
   </page>
 </template>

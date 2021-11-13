@@ -2,12 +2,10 @@
   <require from="../style.css"></require>
 
   <div class="page">
-    <div>
-      <img class="pingu-image-left" src="../resources/Pingu.PNG" alt="Pingu logo">
-      <img class="pingu-image-right" src="../resources/Pingu.PNG" alt="Pingu logo">
-    </div>
     <div class="main-content">
-      <slot></slot>
+      <img class="pingu-image" src="../resources/Pingu.PNG" alt="Pingu logo">
+      <div><slot></slot></div>
+      <img class="pingu-image" src="../resources/Pingu.PNG" alt="Pingu logo">
     </div>
   </div>
 </template>
