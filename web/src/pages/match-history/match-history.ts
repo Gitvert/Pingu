@@ -1,4 +1,4 @@
-import {Match, Player, ScoreboardRow, ServerProxy} from "./serverProxy";
+import {Match, Player, ScoreboardRow, ServerProxy} from "../../serverProxy";
 import {computedFrom} from "aurelia-framework";
 import {match} from "assert";
 

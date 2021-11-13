@@ -1,5 +1,5 @@
 import {autoinject} from "aurelia-framework";
-import {ServerProxy} from "./serverProxy";
+import {ServerProxy} from "../../serverProxy";
 import {Router} from "aurelia-router";
 
 @autoinject

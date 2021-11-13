@@ -1,4 +1,4 @@
-import {Player, ServerProxy} from "./serverProxy";
+import {Player, ServerProxy} from "../../serverProxy";
 import {autoinject, computedFrom} from "aurelia-framework";
 import {Router} from "aurelia-router";
 

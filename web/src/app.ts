@@ -14,10 +14,10 @@ export class App {
     config.options.root = '/';
     config.map([
       { route: '', redirect: 'overview' },
-      { route: '/overview', moduleId: PLATFORM.moduleName('./overview'), title: 'Overview' },
-      { route: '/report-result', moduleId: PLATFORM.moduleName('./report-result'), title: 'Report result' },
-      { route: '/match-history', moduleId: PLATFORM.moduleName('./match-history'), title: 'Match history' },
-      { route: '/create-player', moduleId: PLATFORM.moduleName('./create-player'), title: 'Create player' },
+      { route: '/overview', moduleId: PLATFORM.moduleName('./pages/overview/overview'), title: 'Overview' },
+      { route: '/report-result', moduleId: PLATFORM.moduleName('./pages/report-result/report-result'), title: 'Report result' },
+      { route: '/match-history', moduleId: PLATFORM.moduleName('./pages/match-history/match-history'), title: 'Match history' },
+      { route: '/create-player', moduleId: PLATFORM.moduleName('./pages/create-player/create-player'), title: 'Create player' },
     ]);
 
     this.router = router;

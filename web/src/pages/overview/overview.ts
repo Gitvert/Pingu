@@ -1,4 +1,4 @@
-import {ScoreboardRow, ServerProxy} from "./serverProxy";
+import {ScoreboardRow, ServerProxy} from "../../serverProxy";
 import {autoinject, computedFrom} from 'aurelia-framework';
 import {Router} from "aurelia-router";
 
