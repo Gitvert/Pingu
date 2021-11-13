@@ -11,8 +11,12 @@ interface MatchView {
 }
 
 export class MatchHistory {
+  private static PAGE_SIZE = 15;
+
   private mPlayers: Player[]= [];
   private mMatches: MatchView[]= [];
+  private mCurrentPage = 1;
+  private mLastPage = 0;
 
   public async activate(): Promise<void> {
     this.mPlayers = await ServerProxy.getPlayers();
@@ -26,15 +30,36 @@ export class MatchHistory {
           loserScore: match.loserScore
         };
       });
+
+    this.mLastPage = Math.ceil(this.mMatches.length / MatchHistory.PAGE_SIZE);
   }
 
-  @computedFrom("mScoreBoard")
+  public onPreviousClicked(): void {
+    this.mCurrentPage--;
+  }
+
+  public onNextClicked(): void {
+    this.mCurrentPage++;
+  }
+
+  @computedFrom("mMatches", "mCurrentPage")
   public get matches(): MatchView[] {
-    return this.mMatches;
+    const startIndex = (this.mCurrentPage - 1) * MatchHistory.PAGE_SIZE;
+    const endIndex = startIndex + MatchHistory.PAGE_SIZE;
+    return this.mMatches.slice(startIndex, endIndex);
   }
 
   @computedFrom("mPlayers")
   public get players(): Player[] {
     return this.mPlayers;
+  }
+
+  public get showPreviousButton(): boolean {
+    return this.mCurrentPage > 1;
+  }
+
+  @computedFrom("mCurrentPage")
+  public get showNextButton(): boolean {
+    return this.mCurrentPage != this.mLastPage;
   }
 }
