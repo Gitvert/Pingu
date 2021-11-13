@@ -24,6 +24,10 @@ export class ReportResult {
       .catch(() => alert("INVALID SCORE"));
   }
 
+  public createPlayer(): void {
+    this.mRouter.navigate("/create-player");
+  }
+
   @computedFrom("mPlayers")
   public get players(): Player[] {
     return this.mPlayers;

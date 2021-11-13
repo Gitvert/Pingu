@@ -37,4 +37,8 @@ export class ServerProxy {
   static async postMatch(winner: number, loser: number, winnerScore: number, loserScore: number): Promise<void> {
     return await axios.post("http://localhost:8080/match", {winner, loser, winnerScore, loserScore});
   }
+
+  static async createPlayer(name: string): Promise<void> {
+    return await axios.post("http://localhost:8080/player", {name});
+  }
 }

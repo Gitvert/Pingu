@@ -17,6 +17,7 @@ export class App {
       { route: '/overview', moduleId: PLATFORM.moduleName('./overview'), title: 'Overview' },
       { route: '/report-result', moduleId: PLATFORM.moduleName('./report-result'), title: 'Report result' },
       { route: '/match-history', moduleId: PLATFORM.moduleName('./match-history'), title: 'Match history' },
+      { route: '/create-player', moduleId: PLATFORM.moduleName('./create-player'), title: 'Create player' },
     ]);
 
     this.router = router;

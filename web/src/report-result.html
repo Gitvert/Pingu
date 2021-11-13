@@ -6,8 +6,9 @@
     <div class="report-result">
       <label class="report-result__item">
         <select id="player1" value.bind="selectedPlayer1Id" required>
-          <option model.bind="null" value="">Select winner</option>
+          <option model.bind="null" value="" hidden>Select winner</option>
           <option repeat.for="player of players" model.bind="player.id">${player.name}</option>
+          <option click.delegate="createPlayer()">Create new player</option>
         </select>
       </label>
 
@@ -20,8 +21,9 @@
 
       <label class="report-result__item">
         <select id="player2" value.bind="selectedPlayer2Id" required>
-          <option model.bind="null" value="">Select loser</option>
+          <option model.bind="null" value="" hidden>Select loser</option>
           <option repeat.for="player of players" model.bind="player.id">${player.name}</option>
+          <option click.delegate="createPlayer()">Create new player</option>
         </select>
       </label>
     </div>
