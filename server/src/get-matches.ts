@@ -1,6 +1,6 @@
-import {DatabaseHandler} from "./database/database-handler";
 import {MatchResponse} from "./responses";
 import {ResponseHelper} from "./ResponseHelper";
+import {DatabaseHandler} from "./database/database-handler";
 
 export function getMatches(req: any, res: any, databaseHandler: DatabaseHandler) {
     databaseHandler.fetchMatches().then((records) => {

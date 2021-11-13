@@ -1,6 +1,6 @@
 import {PlayerResponse} from "./responses";
-import {DatabaseHandler} from "./database/database-handler";
 import {ResponseHelper} from "./ResponseHelper";
+import {DatabaseHandler} from "./database/database-handler";
 
 export function getPlayers(req: any, res: any, databaseHandler: DatabaseHandler) {
     databaseHandler.fetchPlayers().then((records) => {

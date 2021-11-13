@@ -1,6 +1,6 @@
-import {DatabaseHandler} from "./database/database-handler";
 import {Match} from "./match";
 import request from "request";
+import {DatabaseHandler} from "./database/database-handler";
 
 const config = require("./pingu-config.json");
 

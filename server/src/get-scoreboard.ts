@@ -1,9 +1,9 @@
-import {DatabaseHandler} from "./database/database-handler";
 import {Player} from "./player";
 import {Match} from "./match";
 import {Elo} from "./elo";
 import {ScoreboardResponse} from "./responses";
 import {ResponseHelper} from "./ResponseHelper";
+import {DatabaseHandler} from "./database/database-handler";
 
 export function getScoreboard(req: any, res: any, databaseHandler: DatabaseHandler) {
     databaseHandler.fetchPlayers().then((playerRecords) => {
