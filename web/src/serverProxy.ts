@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as environment from '../config/environment.json';
 
 export interface Match {
   date: string;
@@ -21,24 +22,26 @@ export interface ScoreboardRow {
   losses: number;
 }
 
+const serverHost = environment.serverHost;
+
 export class ServerProxy {
   static async getMatches(): Promise<Match[]> {
-    return (await axios.get("http://localhost:8080/matches")).data as Match[];
+    return (await axios.get(`${serverHost}/matches`)).data as Match[];
   }
 
   static async getPlayers(): Promise<Player[]> {
-    return (await axios.get("http://localhost:8080/players")).data as Player[];
+    return (await axios.get(`${serverHost}/players`)).data as Player[];
   }
 
   static async getScoreboard(): Promise<ScoreboardRow[]> {
-    return (await axios.get("http://localhost:8080/scoreboard")).data as ScoreboardRow[];
+    return (await axios.get(`${serverHost}/scoreboard`)).data as ScoreboardRow[];
   }
 
   static async postMatch(winner: number, loser: number, winnerScore: number, loserScore: number): Promise<void> {
-    return await axios.post("http://localhost:8080/match", {winner, loser, winnerScore, loserScore});
+    return await axios.post(`${serverHost}/match`, {winner, loser, winnerScore, loserScore});
   }
 
   static async createPlayer(name: string): Promise<void> {
-    return await axios.post("http://localhost:8080/player", {name});
+    return await axios.post(`${serverHost}/player`, {name});
   }
 }

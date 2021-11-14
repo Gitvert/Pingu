@@ -1,4 +1,5 @@
 {
   "debug": false,
-  "testing": false
+  "testing": false,
+  "serverHost": "TBD"
 }
