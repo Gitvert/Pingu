@@ -5,8 +5,8 @@
   "main": "main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/main.ts",
-    "once": "./node_modules/.bin/ts-node ./src/main.ts"
+    "watch": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/main.ts dev",
+    "once": "./node_modules/.bin/ts-node ./src/main.ts dev"
   },
   "author": "Jesper Evertsson",
   "license": "MIT",
