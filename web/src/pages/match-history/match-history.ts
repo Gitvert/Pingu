@@ -62,4 +62,14 @@ export class MatchHistory {
   public get showNextButton(): boolean {
     return this.mCurrentPage != this.mLastPage;
   }
+
+  @computedFrom("mMatches")
+  public get showMatches(): boolean {
+    return this.mMatches.length > 0;
+  }
+
+  @computedFrom("mMatches")
+  public get showPaging(): boolean {
+    return this.mMatches.length > MatchHistory.PAGE_SIZE;
+  }
 }

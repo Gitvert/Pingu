@@ -24,4 +24,9 @@ export class Overview {
   public get scoreboard(): ScoreboardRow[] {
     return this.mScoreBoard;
   }
+
+  @computedFrom("mScoreBoard")
+  public get showScoreboard(): boolean {
+    return this.mScoreBoard.length > 0;
+  }
 }
