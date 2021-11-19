@@ -16,7 +16,8 @@ export function createMatch(req: any, res: any, databaseHandler: DatabaseHandler
         return;
     }
 
-    databaseHandler.recordMatch(new Match(new Date().toLocaleString(), winnerId, loserId, winnerScore, loserScore)).then(() => {
+    const matchDate = new Date().toISOString().split('.')[0].replace('T', ' ');
+    databaseHandler.recordMatch(new Match(matchDate, winnerId, loserId, winnerScore, loserScore)).then(() => {
 
         res.sendStatus(200);
 
