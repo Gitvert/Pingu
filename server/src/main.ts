@@ -1,6 +1,6 @@
 import bodyParser from "body-parser";
 import express from "express";
-import {SqliteHandler} from "./database/sqlite-handler";
+// import {SqliteHandler} from "./database/sqlite-handler";
 import {getPlayers} from "./get-players";
 import {getMatches} from "./get-matches";
 import {getScoreboard} from "./get-scoreboard";
@@ -9,10 +9,17 @@ import {createPlayer} from "./create-player";
 import {DatabaseHandler} from "./database/database-handler";
 import {DynamodbHandler} from "./database/dynamodb-handler";
 
+export enum Environment {
+   LOCAL = 0,
+   PROD = 1,
+}
+
 const app = express();
 app.use(bodyParser.json({}));
 
-const databaseHandler: DatabaseHandler = getDatabaseHandler();
+const environment: Environment = getEnvironment();
+const databaseHandler: DatabaseHandler = new DynamodbHandler();
+// const databaseHandler: DatabaseHandler = new SqliteHandler();
 
 app.all("/*", (req, res, next) => {
    res.header("Access-Control-Allow-Origin", "*");
@@ -37,7 +44,7 @@ app.get("/scoreboard", (req, res) => {
 });
 
 app.post("/match", (req, res) => {
-   createMatch(req, res, databaseHandler);
+   createMatch(req, res, databaseHandler, environment);
 });
 
 app.post("/player", (req, res) => {
@@ -48,7 +55,15 @@ app.listen( 8080, () => {
    console.log("App listening at port 8080");
 });
 
-function getDatabaseHandler(): DatabaseHandler {
+function getEnvironment(): Environment {
+   if (process.argv.slice(2)[0] == "dev") {
+      return Environment.LOCAL;
+   } else {
+      return Environment.PROD;
+   }
+}
+
+/*function getDatabaseHandler(): DatabaseHandler {
    if (process.argv.slice(2)[0] == "dev") {
       console.log("Running with sqlite")
       return new SqliteHandler();
@@ -56,4 +71,4 @@ function getDatabaseHandler(): DatabaseHandler {
       console.log("Running with DynamoDB")
       return new DynamodbHandler();
    }
-}
+}*/

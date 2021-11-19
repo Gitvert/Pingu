@@ -1,10 +1,11 @@
 import {Match} from "./match";
 import request from "request";
 import {DatabaseHandler} from "./database/database-handler";
+import {Environment} from "./main";
 
 const config = require("./pingu-config.json");
 
-export function createMatch(req: any, res: any, databaseHandler: DatabaseHandler) {
+export function createMatch(req: any, res: any, databaseHandler: DatabaseHandler, environment: Environment) {
     const winnerId: number = req.body.winner;
     const loserId: number = req.body.loser;
     const winnerScore: number = req.body.winnerScore;
@@ -19,22 +20,24 @@ export function createMatch(req: any, res: any, databaseHandler: DatabaseHandler
 
         res.sendStatus(200);
 
-        databaseHandler.fetchPlayerFromId(winnerId).then((winner) => {
-            databaseHandler.fetchPlayerFromId(loserId).then((loser) => {
-                let slackText;
-                if (winnerScore != undefined && loserScore != undefined) {
-                    slackText = `${winner.name} won over ${loser.name} with ${winnerScore} - ${loserScore}`;
-                } else {
-                    slackText = `${winner.name} won over ${loser.name}`;
-                }
-
-                request.post(config.slackUrl, {
-                    json: {
-                        text: slackText
+        if (environment == Environment.PROD) {
+            databaseHandler.fetchPlayerFromId(winnerId).then((winner) => {
+                databaseHandler.fetchPlayerFromId(loserId).then((loser) => {
+                    let slackText;
+                    if (winnerScore != undefined && loserScore != undefined) {
+                        slackText = `${winner.name} won over ${loser.name} with ${winnerScore} - ${loserScore}`;
+                    } else {
+                        slackText = `${winner.name} won over ${loser.name}`;
                     }
+
+                    request.post(config.slackUrl, {
+                        json: {
+                            text: slackText
+                        }
+                    });
                 });
             });
-        });
+        }
     }).catch((error) => {
         if (error.toString().includes("FOREIGN KEY constraint failed")) {
             res.sendStatus(400);
