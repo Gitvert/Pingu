@@ -16,7 +16,7 @@ export class DynamodbHandler implements DatabaseHandler {
 
     public async fetchPlayers(): Promise<PlayerRecord[]> {
         return new Promise((resolve, reject) => {
-            this.mDatabase.query({TableName: "pingu-test"}, (error, data) => {
+            this.mDatabase.scan({TableName: "pingu-test"}, (error, data) => {
                 if (error) {
                     console.error(error.message);
                     reject(error);
