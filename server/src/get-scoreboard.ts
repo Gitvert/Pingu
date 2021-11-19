@@ -10,7 +10,9 @@ export function getScoreboard(req: any, res: any, databaseHandler: DatabaseHandl
         databaseHandler.fetchMatches().then((matchRecords) => {
             const players = new Map(playerRecords.map((r) => [r.id, new Player(r.id, r.name)]));
 
-            const matches: Match[] = matchRecords.map((r) => new Match(r.date, r.winner, r.loser, r.winner_score, r.loser_score));
+            const matches: Match[] = matchRecords
+                .map((r) => new Match(r.date, r.winner, r.loser, r.winner_score, r.loser_score))
+                .sort((r1, r2) => new Date(r1.date).getTime() - new Date(r2.date).getTime());
 
             matches.forEach((match) => {
                 Elo.updateEloRating(players.get(match.winner), players.get(match.loser));
