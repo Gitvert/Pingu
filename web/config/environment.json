@@ -1,5 +1,4 @@
 {
   "debug": true,
-  "testing": true,
-  "serverHost": "http://localhost:8080"
+  "testing": true
 }

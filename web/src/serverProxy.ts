@@ -22,7 +22,7 @@ export interface ScoreboardRow {
   losses: number;
 }
 
-const serverHost = environment.serverHost;
+const serverHost = `http://${window.location.hostname}:8080`;
 
 export class ServerProxy {
   static async getMatches(): Promise<Match[]> {
