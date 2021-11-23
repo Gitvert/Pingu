@@ -22,22 +22,7 @@ export function createMatch(req: any, res: any, databaseHandler: DatabaseHandler
         res.sendStatus(200);
 
         if (environment == Environment.PROD) {
-            databaseHandler.fetchPlayerFromId(winnerId).then((winner) => {
-                databaseHandler.fetchPlayerFromId(loserId).then((loser) => {
-                    let slackText;
-                    if (winnerScore != undefined && loserScore != undefined) {
-                        slackText = `${winner.name} won over ${loser.name} with ${winnerScore} - ${loserScore}`;
-                    } else {
-                        slackText = `${winner.name} won over ${loser.name}`;
-                    }
-
-                    request.post(config.slackUrl, {
-                        json: {
-                            text: slackText
-                        }
-                    });
-                });
-            });
+            postToSlack(winnerId, loserId, winnerScore, loserScore, databaseHandler);
         }
     }).catch((error) => {
         if (error.toString().includes("FOREIGN KEY constraint failed")) {
@@ -74,4 +59,37 @@ function validateScore(winnerScore: number, loserScore: number): boolean {
     }
 
     return true;
+}
+
+function postToSlack(
+    winnerId: number,
+    loserId: number,
+    winnerScore: number,
+    loserScore: number,
+    databaseHandler: DatabaseHandler
+) {
+    databaseHandler.fetchPlayerFromId(winnerId).then((winner) => {
+        databaseHandler.fetchPlayerFromId(loserId).then((loser) => {
+            let slackText;
+            if (winnerScore != undefined && loserScore != undefined) {
+                slackText = `${winner.name} won over ${loser.name} with ${winnerScore} - ${loserScore}`;
+            } else {
+                slackText = `${winner.name} won over ${loser.name}`;
+            }
+
+            request.post(
+                "https://slack.com/api/chat.postMessage",
+                {
+                    headers: {
+                        "Authorization": `Bearer ${config.bearerToken}`,
+                        "content-type": "application/json"
+                    },
+                    json: {
+                        text: slackText,
+                        channel: `${config.channelId}`
+                    },
+                }
+            );
+        });
+    });
 }
