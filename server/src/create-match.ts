@@ -81,12 +81,12 @@ function postToSlack(
                 "https://slack.com/api/chat.postMessage",
                 {
                     headers: {
-                        "Authorization": `Bearer ${config.bearerToken}`,
+                        "Authorization": `Bearer ${config.slackBearerToken}`,
                         "content-type": "application/json"
                     },
                     json: {
                         text: slackText,
-                        channel: `${config.channelId}`
+                        channel: `${config.slackChannelId}`
                     },
                 }
             );

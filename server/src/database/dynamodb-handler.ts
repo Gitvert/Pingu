@@ -3,14 +3,19 @@ import {DatabaseHandler} from "./database-handler";
 import {MatchRecord, PlayerRecord} from "./records";
 import {Match} from "../match";
 
+const config = require("../pingu-config.json");
+
 export class DynamodbHandler implements DatabaseHandler {
+
+    private static PLAYER_TABLE_NAME: string =  "PinguPlayers";
+    private static MATCH_TABLE_NAME: string =  "PinguMatches";
 
     private mDatabase: AWS.DynamoDB.DocumentClient;
     private mHighestPlayerIndex: number = -1;
 
     constructor() {
         AWS.config.update({
-            region: "us-east-1"
+            region: config.awsRegion
         });
         this.mDatabase = new AWS.DynamoDB.DocumentClient();
 
@@ -25,7 +30,7 @@ export class DynamodbHandler implements DatabaseHandler {
 
     public async fetchPlayers(): Promise<PlayerRecord[]> {
         return new Promise((resolve, reject) => {
-            this.mDatabase.scan({TableName: "pingu-test"}, (error, data) => {
+            this.mDatabase.scan({TableName: DynamodbHandler.PLAYER_TABLE_NAME}, (error, data) => {
                 if (error) {
                     console.error(error.message);
                     reject(error);
@@ -43,7 +48,7 @@ export class DynamodbHandler implements DatabaseHandler {
 
     fetchMatches(): Promise<MatchRecord[]> {
         return new Promise((resolve, reject) => {
-            this.mDatabase.scan({TableName: "pingu-test-2"}, (error, data) => {
+            this.mDatabase.scan({TableName: DynamodbHandler.MATCH_TABLE_NAME}, (error, data) => {
                 if (error) {
                     console.error(error.message);
                     reject(error);
@@ -64,7 +69,7 @@ export class DynamodbHandler implements DatabaseHandler {
 
     fetchPlayerFromId(player: number): Promise<PlayerRecord> {
         return new Promise((resolve, reject) => {
-            this.mDatabase.get({TableName: "pingu-test", Key: {id: player}}, (error, data) => {
+            this.mDatabase.get({TableName: DynamodbHandler.PLAYER_TABLE_NAME, Key: {id: player}}, (error, data) => {
                 if (error) {
                     console.error(error.message);
                     reject(error);
@@ -80,7 +85,7 @@ export class DynamodbHandler implements DatabaseHandler {
 
     createPlayer(name: string): Promise<void> {
         const data = {
-            TableName: "pingu-test",
+            TableName: DynamodbHandler.PLAYER_TABLE_NAME,
             Item: {
                 "id": this.mHighestPlayerIndex + 1,
                 "name": name
@@ -101,7 +106,7 @@ export class DynamodbHandler implements DatabaseHandler {
 
     recordMatch(match: Match): Promise<void> {
         const data = {
-            TableName: "pingu-test-2",
+            TableName: DynamodbHandler.MATCH_TABLE_NAME,
             Item: {
                 "date": match.date,
                 "winner": match.winner,
