@@ -9,7 +9,7 @@ export class App {
 
   configureRouter(config: RouterConfiguration, router: Router): void {
     config.title = 'Pingu';
-    config.options.pushState = true;
+    config.options.pushState = false;
     config.options.root = '/';
     config.map([
       { route: '', redirect: 'overview' },
