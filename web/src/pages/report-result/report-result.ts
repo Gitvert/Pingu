@@ -1,12 +1,12 @@
 import {Player, ServerProxy} from "../../serverProxy";
-import {autoinject, computedFrom} from "aurelia-framework";
+import {autoinject, computedFrom, observable} from "aurelia-framework";
 import {Router} from "aurelia-router";
 
 @autoinject
 export class ReportResult {
 
-  public selectedPlayer1Id: number;
-  public selectedPlayer2Id: number;
+  @observable public selectedPlayer1Id: number;
+  @observable public selectedPlayer2Id: number;
   public player1Score: string;
   public player2Score: string;
 
@@ -24,12 +24,24 @@ export class ReportResult {
       .catch(() => alert("INVALID SCORE"));
   }
 
-  public createPlayer(): void {
-    this.mRouter.navigate("/create-player");
+  public selectedPlayer1IdChanged(newValue: number): void {
+    if (newValue == -1) {
+      this.createPlayer();
+    }
+  }
+
+  public selectedPlayer2IdChanged(newValue: number): void {
+    if (newValue == -1) {
+      this.createPlayer();
+    }
   }
 
   @computedFrom("mPlayers")
   public get players(): Player[] {
     return this.mPlayers;
+  }
+
+  private createPlayer(): void {
+    this.mRouter.navigate("/create-player");
   }
 }
