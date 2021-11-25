@@ -11,6 +11,11 @@ export function createMatch(req: any, res: any, databaseHandler: DatabaseHandler
     const winnerScore: number = req.body.winnerScore;
     const loserScore: number = req.body.loserScore;
 
+    if (isNaN(winnerId) || isNaN(loserId) || isNaN(winnerScore) || isNaN(loserScore)) {
+        res.sendStatus(400);
+        return;
+    }
+
     if (!validateScore(winnerScore, loserScore)) {
         res.sendStatus(400);
         return;
@@ -34,10 +39,6 @@ export function createMatch(req: any, res: any, databaseHandler: DatabaseHandler
 }
 
 function validateScore(winnerScore: number, loserScore: number): boolean {
-    if (winnerScore == undefined && loserScore == undefined) {
-        return true;
-    }
-
     if ((winnerScore == undefined || loserScore == undefined)) {
         return false;
     }
