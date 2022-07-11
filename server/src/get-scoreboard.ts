@@ -6,6 +6,20 @@ import {ResponseHelper} from "./ResponseHelper";
 import {DatabaseHandler} from "./database/database-handler";
 
 export function getScoreboard(req: any, res: any, databaseHandler: DatabaseHandler) {
+    try {
+        const players: Player[] = getPlayersWithElo(databaseHandler);
+
+        const responseBody: ScoreboardResponse[] = [...players.values()].map((p) => {
+            return new ScoreboardResponse(p.id, p.name, p.rating, p.wins, p.losses);
+        }).sort((r1, r2) => r2.rating - r1.rating);
+
+        ResponseHelper.send(res, responseBody);
+    } catch {
+        res.sendStatus(500);
+    }
+}
+
+export function getPlayersWithElo(databaseHandler: DatabaseHandler): Player[] {
     databaseHandler.fetchPlayers().then((playerRecords) => {
         databaseHandler.fetchMatches().then((matchRecords) => {
             const players = new Map(playerRecords.map((r) => [r.id, new Player(r.id, r.name)]));
@@ -18,15 +32,11 @@ export function getScoreboard(req: any, res: any, databaseHandler: DatabaseHandl
                 Elo.updateEloRating(players.get(match.winner), players.get(match.loser));
             });
 
-            const responseBody: ScoreboardResponse[] = [...players.values()].map((p) => {
-                return new ScoreboardResponse(p.id, p.name, p.rating, p.wins, p.losses);
-            }).sort((r1, r2) => r2.rating - r1.rating);
-
-            ResponseHelper.send(res, responseBody);
-        }).catch(() => {
-            res.sendStatus(500);
+            return players;
+        }).catch((e) => {
+            throw(e);
         });
-    }).catch(() => {
-        res.sendStatus(500);
+    }).catch((e) => {
+        throw(e);
     });
 }

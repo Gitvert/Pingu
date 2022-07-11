@@ -8,12 +8,14 @@ export class Elo {
         return 1 / (1 + Math.pow(10, (rating1 - rating2) / 400));
     }
 
-    public static updateEloRating(winner: Player, loser: Player) {
+    public static updateEloRating(winner: Player, loser: Player): number {
         const probability: number = this.calculateProbability(loser.rating, winner.rating);
 
         const ratingChange = Math.round(this.k * (1 - probability));
 
         winner.increaseRating(ratingChange);
         loser.reduceRating(ratingChange);
+
+        return ratingChange;
     }
 }

@@ -21,13 +21,22 @@ export function createMatch(req: any, res: any, databaseHandler: DatabaseHandler
         return;
     }
 
+    const match: Match = new Match(matchDate, winnerId, loserId, winnerScore, loserScore);
+    let ratingChange: number = undefined;
+
+    try {
+        const players: Player[] = getPlayersWithElo(databaseHandler);
+        ratingChange = Elo.updateEloRating(players.get(match.winner), players.get(match.loser));
+    } catch {
+    }
+
     const matchDate = new Date().toISOString().split('.')[0].replace('T', ' ');
-    databaseHandler.recordMatch(new Match(matchDate, winnerId, loserId, winnerScore, loserScore)).then(() => {
+    databaseHandler.recordMatch(match).then(() => {
 
         res.sendStatus(200);
 
         if (environment == Environment.PROD) {
-            postToSlack(winnerId, loserId, winnerScore, loserScore, databaseHandler);
+            postToSlack(winnerId, loserId, winnerScore, loserScore, ratingChange, databaseHandler);
         }
     }).catch((error) => {
         if (error.toString().includes("FOREIGN KEY constraint failed")) {
@@ -67,16 +76,16 @@ function postToSlack(
     loserId: number,
     winnerScore: number,
     loserScore: number,
+    ratingChange: number,
     databaseHandler: DatabaseHandler
 ) {
     databaseHandler.fetchPlayerFromId(winnerId).then((winner) => {
         databaseHandler.fetchPlayerFromId(loserId).then((loser) => {
-            let slackText;
-            if (winnerScore != undefined && loserScore != undefined) {
-                slackText = `${winner.name} won over ${loser.name} with ${winnerScore} - ${loserScore}`;
-            } else {
-                slackText = `${winner.name} won over ${loser.name}`;
-            }
+            const winnerRatingChangeText = ratingChange ? `(+${ratingChange})` : "";
+            const loserRatingChangeText = ratingChange ? `(-${ratingChange})` : "";
+            const scoreText = winnerScore && loserScore ? ` with ${winnerScore} - ${loserScore}` : "";
+
+            const slackText = `${winner.name}${winnerRatingChangeText} won over ${loser.name}${loserRatingChangeText}${scoreText}`;
 
             request.post(
                 "https://slack.com/api/chat.postMessage",
