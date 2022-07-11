@@ -2,7 +2,7 @@
 
 ## Requested changes
 
-* Sort players in report match drop down
+* ~~Sort players in report match drop down~~
 * Print ELO change in Slack post after completed match
 * Add filters to match history page
 * Add back to main page navigation item

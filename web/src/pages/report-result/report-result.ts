@@ -10,7 +10,7 @@ export class ReportResult {
   public player1Score: string;
   public player2Score: string;
 
-  private mPlayers: Player[]= [];
+  private mPlayers: Player[] = [];
 
   constructor(private mRouter: Router) {}
 
@@ -38,7 +38,7 @@ export class ReportResult {
 
   @computedFrom("mPlayers")
   public get players(): Player[] {
-    return this.mPlayers;
+    return this.mPlayers.sort((a, b) => a.name < b.name ? -1 : 1);
   }
 
   private createPlayer(): void {
