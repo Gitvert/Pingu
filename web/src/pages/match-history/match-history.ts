@@ -1,6 +1,5 @@
-import {Match, Player, ScoreboardRow, ServerProxy} from "../../serverProxy";
+import {Player, ServerProxy} from "../../serverProxy";
 import {computedFrom} from "aurelia-framework";
-import {match} from "assert";
 
 interface MatchView {
   date: string;
