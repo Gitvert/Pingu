@@ -1,13 +1,13 @@
 import bodyParser from "body-parser";
 import express from "express";
-import {SqliteHandler} from "./database/sqlite-handler";
+// import {SqliteHandler} from "./database/sqlite-handler";
 import {getPlayers} from "./get-players";
 import {getMatches} from "./get-matches";
 import {getScoreboard} from "./get-scoreboard";
 import {createMatch} from "./create-match";
 import {createPlayer} from "./create-player";
 import {DatabaseHandler} from "./database/database-handler";
-//  import {DynamodbHandler} from "./database/dynamodb-handler";
+import {DynamodbHandler} from "./database/dynamodb-handler";
 
 export enum Environment {
    LOCAL = 0,
@@ -18,8 +18,8 @@ const app = express();
 app.use(bodyParser.json({}));
 
 const environment: Environment = getEnvironment();
-// const databaseHandler: DatabaseHandler = new DynamodbHandler();
-const databaseHandler: DatabaseHandler = new SqliteHandler();
+const databaseHandler: DatabaseHandler = new DynamodbHandler();
+// const databaseHandler: DatabaseHandler = new SqliteHandler();
 
 app.all("/*", (req, res, next) => {
    res.header("Access-Control-Allow-Origin", "*");
@@ -56,13 +56,11 @@ app.listen( 8080, () => {
 });
 
 function getEnvironment(): Environment {
-   /* if (process.argv.slice(2)[0] == "dev") {
+   if (process.argv.slice(2)[0] == "dev") {
       return Environment.LOCAL;
    } else {
       return Environment.PROD;
-   } */
-
-   return Environment.LOCAL;
+   }
 }
 
 /*function getDatabaseHandler(): DatabaseHandler {
