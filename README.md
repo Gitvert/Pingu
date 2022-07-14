@@ -6,7 +6,7 @@
 * ~~Print ELO change in Slack post after completed match~~
 * Add filters to match history page
 * ~~Add back to main page navigation item~~
-* Make sure buttons on leaderboard are not hidden below table
+* ~~Make sure buttons on leaderboard are not hidden below table~~
 
 
 ## EC2 instance launch script

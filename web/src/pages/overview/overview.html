@@ -2,6 +2,11 @@
   <require from="../../components/page"></require>
 
   <page>
+    <div class="center">
+      <button class="btn btn-primary" click.delegate="reportResultClicked()">Report result</button>
+      <button class="btn btn-primary" click.delegate="matchHistoryClicked()">Match history</button>
+    </div>
+
     <table if.bind="showScoreboard" class="table table-light table-striped">
       <tr>
         <th>Player</th>
@@ -16,11 +21,6 @@
         <td>${row.rating}</td>
       </tr>
     </table>
-
-    <div class="center">
-      <button class="btn btn-primary" click.delegate="reportResultClicked()">Report result</button>
-      <button class="btn btn-primary" click.delegate="matchHistoryClicked()">Match history</button>
-    </div>
   </page>
 
 </template>
