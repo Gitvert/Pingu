@@ -32,26 +32,24 @@ export function createMatch(req: any, res: any, databaseHandler: DatabaseHandler
 
     getPlayersWithElo(databaseHandler).then(
         (players) => {
-            ratingChange = Elo.updateEloRating(
-                players.get(winnerId),
-                players.get(loserId),
-            );
+            ratingChange = Elo.updateEloRating(players.get(winnerId), players.get(loserId));
         }
-    ).catch(() => {});
+    ).catch(
+        () => {}
+    )
+    .finally(() => {
+        databaseHandler.recordMatch(match).then(() => {
 
-    databaseHandler.recordMatch(match).then(() => {
+            res.sendStatus(200);
 
-        res.sendStatus(200);
-
-        if (environment == Environment.PROD) {
-            postToSlack(winnerId, loserId, winnerScore, loserScore, ratingChange, databaseHandler);
-        }
-    }).catch((error) => {
-        if (error.toString().includes("FOREIGN KEY constraint failed")) {
-            res.sendStatus(400);
-        } else {
-            res.sendStatus(500);
-        }
+            printMatchResult(winnerId, loserId, winnerScore, loserScore, ratingChange, environment, databaseHandler);
+        }).catch((error) => {
+            if (error.toString().includes("FOREIGN KEY constraint failed")) {
+                res.sendStatus(400);
+            } else {
+                res.sendStatus(500);
+            }
+        });
     });
 }
 
@@ -79,12 +77,13 @@ function validateScore(winnerScore: number, loserScore: number): boolean {
     return true;
 }
 
-function postToSlack(
+function printMatchResult(
     winnerId: number,
     loserId: number,
     winnerScore: number,
     loserScore: number,
     ratingChange: number,
+    environment: Environment,
     databaseHandler: DatabaseHandler
 ) {
     databaseHandler.fetchPlayerFromId(winnerId).then((winner) => {
@@ -93,21 +92,29 @@ function postToSlack(
             const loserRatingChangeText = ratingChange ? `(-${ratingChange})` : "";
             const scoreText = winnerScore && loserScore ? ` with ${winnerScore} - ${loserScore}` : "";
 
-            const slackText = `${winner.name}${winnerRatingChangeText} won over ${loser.name}${loserRatingChangeText}${scoreText}`;
+            const matchResultText = `${winner.name}${winnerRatingChangeText} won over ${loser.name}${loserRatingChangeText}${scoreText}`;
 
-            request.post(
-                "https://slack.com/api/chat.postMessage",
-                {
-                    headers: {
-                        "Authorization": `Bearer ${config.slackBearerToken}`,
-                        "content-type": "application/json"
-                    },
-                    json: {
-                        text: slackText,
-                        channel: `${config.slackChannelId}`
-                    },
-                }
-            );
+            if (environment == Environment.PROD) {
+                postToSlack(matchResultText);
+            } else {
+                console.log(matchResultText);
+            }
         });
     });
+}
+
+function postToSlack(message: string) {
+    request.post(
+        "https://slack.com/api/chat.postMessage",
+        {
+            headers: {
+                "Authorization": `Bearer ${config.slackBearerToken}`,
+                "content-type": "application/json"
+            },
+            json: {
+                text: message,
+                channel: `${config.slackChannelId}`
+            },
+        }
+    );
 }
