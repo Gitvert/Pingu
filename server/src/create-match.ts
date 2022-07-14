@@ -88,11 +88,10 @@ function printMatchResult(
 ) {
     databaseHandler.fetchPlayerFromId(winnerId).then((winner) => {
         databaseHandler.fetchPlayerFromId(loserId).then((loser) => {
-            const winnerRatingChangeText = ratingChange ? `(+${ratingChange})` : "";
-            const loserRatingChangeText = ratingChange ? `(-${ratingChange})` : "";
+            const ratingChangeText = ratingChange ? `(Rating change: ${ratingChange})` : "";
             const scoreText = winnerScore && loserScore ? ` with ${winnerScore} - ${loserScore}` : "";
 
-            const matchResultText = `${winner.name}${winnerRatingChangeText} won over ${loser.name}${loserRatingChangeText}${scoreText}`;
+            const matchResultText = `${winner.name} won over ${loser.name}${scoreText} ${ratingChangeText}`;
 
             if (environment == Environment.PROD) {
                 postToSlack(matchResultText);
