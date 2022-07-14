@@ -2,6 +2,14 @@
   <require from="../../components/page"></require>
 
   <page>
+
+    <div class="center">
+      <select id="player" value.bind="selectedPlayer" required>
+        <option model.bind="undefined" value="">All</option>
+        <option repeat.for="player of players" model.bind="player.name">${player.name}</option>
+      </select>
+    </div>
+
     <table if.bind="showMatches" class="table table-light table-striped">
       <tr>
         <th>Date</th>

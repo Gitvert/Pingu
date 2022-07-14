@@ -1,5 +1,5 @@
 import {Player, ServerProxy} from "../../serverProxy";
-import {computedFrom} from "aurelia-framework";
+import {computedFrom, observable} from "aurelia-framework";
 
 interface MatchView {
   date: string;
@@ -12,10 +12,13 @@ interface MatchView {
 export class MatchHistory {
   private static PAGE_SIZE = 15;
 
+  @observable public selectedPlayer: string;
+
   private mPlayers: Player[]= [];
-  private mMatches: MatchView[]= [];
+  private mMatches: MatchView[] = [];
+  private mSelectedMatches: MatchView[] = [];
   private mCurrentPage = 1;
-  private mLastPage = 0;
+  private mLastPage = 1;
 
   public async activate(): Promise<void> {
     this.mPlayers = await ServerProxy.getPlayers();
@@ -30,7 +33,7 @@ export class MatchHistory {
         };
       });
 
-    this.mLastPage = Math.ceil(this.mMatches.length / MatchHistory.PAGE_SIZE);
+    this.updateMatchList();
   }
 
   public onPreviousClicked(): void {
@@ -41,34 +44,58 @@ export class MatchHistory {
     this.mCurrentPage++;
   }
 
-  @computedFrom("mMatches", "mCurrentPage")
+  public selectedPlayerChanged(): void {
+    this.mCurrentPage = 1;
+    this.updateMatchList();
+  }
+
+  @computedFrom("mSelectedMatches", "mCurrentPage")
   public get matches(): MatchView[] {
     const startIndex = (this.mCurrentPage - 1) * MatchHistory.PAGE_SIZE;
     const endIndex = startIndex + MatchHistory.PAGE_SIZE;
-    return this.mMatches.slice(startIndex, endIndex);
+
+    return this.mSelectedMatches.slice(startIndex, endIndex);
   }
 
-  @computedFrom("mPlayers")
-  public get players(): Player[] {
-    return this.mPlayers;
-  }
-
+  @computedFrom("mCurrentPage")
   public get showPreviousButton(): boolean {
     return this.mCurrentPage > 1;
   }
 
-  @computedFrom("mCurrentPage")
+  @computedFrom("mCurrentPage", "mLastPage")
   public get showNextButton(): boolean {
     return this.mCurrentPage != this.mLastPage;
   }
 
-  @computedFrom("mMatches")
+  @computedFrom("mSelectedMatches")
   public get showMatches(): boolean {
-    return this.mMatches.length > 0;
+    return this.mSelectedMatches.length > 0;
   }
 
-  @computedFrom("mMatches")
+  @computedFrom("mSelectedMatches")
   public get showPaging(): boolean {
-    return this.mMatches.length > MatchHistory.PAGE_SIZE;
+    return this.mSelectedMatches.length > MatchHistory.PAGE_SIZE;
+  }
+
+  @computedFrom("mPlayers")
+  public get players(): Player[] {
+    return this.mPlayers.sort((a, b) => a.name < b.name ? -1 : 1);
+  }
+
+  private updateMatchList() {
+    this.mSelectedMatches = this.mMatches.filter((match) => this.checkFilter(match));
+    this.mLastPage = Math.ceil(this.mSelectedMatches.length / MatchHistory.PAGE_SIZE);
+  }
+
+  private checkFilter(match: MatchView): boolean {
+    if (match.winner.localeCompare(this.selectedPlayer) === 0) {
+      return true;
+    }
+
+    if (match.loser.localeCompare(this.selectedPlayer) === 0) {
+      return true;
+    }
+
+    return this.selectedPlayer == undefined;
   }
 }
