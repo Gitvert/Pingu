@@ -6,22 +6,22 @@ import {ResponseHelper} from "./ResponseHelper";
 import {DatabaseHandler} from "./database/database-handler";
 
 export function getScoreboard(req: any, res: any, databaseHandler: DatabaseHandler) {
-    try {
-        const players: Player[] = getPlayersWithElo(databaseHandler);
+    getPlayersWithElo(databaseHandler).then(
+        (players) => {
+            const responseBody: ScoreboardResponse[] = [...players.values()].map((p) => {
+                return new ScoreboardResponse(p.id, p.name, p.rating, p.wins, p.losses);
+            }).sort((r1, r2) => r2.rating - r1.rating);
 
-        const responseBody: ScoreboardResponse[] = [...players.values()].map((p) => {
-            return new ScoreboardResponse(p.id, p.name, p.rating, p.wins, p.losses);
-        }).sort((r1, r2) => r2.rating - r1.rating);
-
-        ResponseHelper.send(res, responseBody);
-    } catch {
+            ResponseHelper.send(res, responseBody);
+        }
+    ).catch(() => {
         res.sendStatus(500);
-    }
+    });
 }
 
-export function getPlayersWithElo(databaseHandler: DatabaseHandler): Player[] {
-    databaseHandler.fetchPlayers().then((playerRecords) => {
-        databaseHandler.fetchMatches().then((matchRecords) => {
+export function getPlayersWithElo(databaseHandler: DatabaseHandler): Promise<Map<number, Player>> {
+    return databaseHandler.fetchPlayers().then((playerRecords) => {
+        return databaseHandler.fetchMatches().then((matchRecords) => {
             const players = new Map(playerRecords.map((r) => [r.id, new Player(r.id, r.name)]));
 
             const matches: Match[] = matchRecords

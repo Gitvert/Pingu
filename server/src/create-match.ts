@@ -1,7 +1,12 @@
+import {Player} from "./player";
 import {Match} from "./match";
+import {Elo} from "./elo";
+import {getPlayersWithElo} from "./get-scoreboard";
 import request from "request";
 import {DatabaseHandler} from "./database/database-handler";
 import {Environment} from "./main";
+import {ScoreboardResponse} from "./responses";
+import {ResponseHelper} from "./ResponseHelper";
 
 const config = require("./pingu-config.json");
 
@@ -21,16 +26,19 @@ export function createMatch(req: any, res: any, databaseHandler: DatabaseHandler
         return;
     }
 
+    const matchDate = new Date().toISOString().split('.')[0].replace('T', ' ');
     const match: Match = new Match(matchDate, winnerId, loserId, winnerScore, loserScore);
     let ratingChange: number = undefined;
 
-    try {
-        const players: Player[] = getPlayersWithElo(databaseHandler);
-        ratingChange = Elo.updateEloRating(players.get(match.winner), players.get(match.loser));
-    } catch {
-    }
+    getPlayersWithElo(databaseHandler).then(
+        (players) => {
+            ratingChange = Elo.updateEloRating(
+                players.get(winnerId),
+                players.get(loserId),
+            );
+        }
+    ).catch(() => {});
 
-    const matchDate = new Date().toISOString().split('.')[0].replace('T', ' ');
     databaseHandler.recordMatch(match).then(() => {
 
         res.sendStatus(200);

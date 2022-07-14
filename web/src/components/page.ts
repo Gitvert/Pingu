@@ -6,7 +6,7 @@ export class Page {
 
   constructor(private mRouter: Router) {}
 
-  public async pinguClicked(): Promise<Void> {
+  public async pinguClicked() {
     this.mRouter.navigate("/overview");
   }
 }
