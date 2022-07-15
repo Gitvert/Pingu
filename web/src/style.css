@@ -21,6 +21,10 @@
   height: 140px;
 }
 
+.pingu-image:hover {
+  cursor: pointer;
+}
+
 .report-result {
   padding-top: 20px;
 }
