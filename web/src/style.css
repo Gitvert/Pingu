@@ -5,6 +5,24 @@
   justify-content: center;
 }
 
+.main-nav {
+  display: flex;
+  justify-content: center;
+}
+
+.main-nav__item {
+  padding: 10px;
+  margin: 10px 5px 0 5px;
+  background-color: #0d6efd;
+  color: white;
+  border-radius: 5px;
+}
+
+.main-nav__item:hover {
+  cursor: pointer;
+  background-color: #0b5ed7;
+}
+
 .main-content {
   width: 1200px;
   display: flex;

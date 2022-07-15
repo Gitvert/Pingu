@@ -1,6 +1,12 @@
 <template>
   <require from="../style.css"></require>
 
+  <div class="main-nav">
+    <span class="main-nav__item" click.delegate="overviewClicked()">Overview</span>
+    <span class="main-nav__item" click.delegate="reportResultClicked()">Report result</span>
+    <span class="main-nav__item" click.delegate="matchHistoryClicked()">Match history</span>
+  </div>
+
   <div class="page">
     <div class="main-content">
       <img class="pingu-image" src="../../static/Pingu.PNG" alt="Pingu logo" click.delegate="pinguClicked()">
