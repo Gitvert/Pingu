@@ -7,7 +7,7 @@ export class ReportResult {
 
   @observable public selectedPlayer1Id: number;
   @observable public selectedPlayer2Id: number;
-  public player1Score: string;
+  public player1Score: string = "11";
   public player2Score: string;
 
   private mPlayers: Player[] = [];
