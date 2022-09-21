@@ -7,6 +7,7 @@
 * ~~Add filters to match history page~~
 * ~~Add back to main page navigation item~~
 * ~~Make sure buttons on leaderboard are not hidden below table~~
+* Bulk report of games
 
 
 ## EC2 instance launch script
