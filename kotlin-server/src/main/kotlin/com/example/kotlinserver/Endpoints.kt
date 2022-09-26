@@ -1,5 +1,6 @@
 package com.example.kotlinserver
 
+import com.example.kotlinserver.database.SqliteHandler
 import com.example.kotlinserver.models.MatchModel
 import com.example.kotlinserver.models.PlayerModel
 import com.example.kotlinserver.models.ScoreboardModel
@@ -15,11 +16,7 @@ class Endpoints {
 
     @GetMapping("players")
     fun getPlayers(): List<PlayerModel> {
-        return listOf(
-            PlayerModel(1, "Player1"),
-            PlayerModel(2, "Player2"),
-            PlayerModel(3, "Player3"),
-        )
+        return SqliteHandler().fetchPlayers()
     }
 
     @GetMapping("matches")
