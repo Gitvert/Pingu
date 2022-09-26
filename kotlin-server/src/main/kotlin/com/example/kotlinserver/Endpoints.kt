@@ -1,9 +1,12 @@
 package com.example.kotlinserver
 
+import com.example.kotlinserver.database.DatabaseHandler
+import com.example.kotlinserver.database.DynamoDbHandler
 import com.example.kotlinserver.database.SqliteHandler
 import com.example.kotlinserver.models.MatchModel
 import com.example.kotlinserver.models.PlayerModel
 import com.example.kotlinserver.models.ScoreboardModel
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -13,10 +16,21 @@ import org.springframework.web.bind.annotation.RestController
 @CrossOrigin
 @RestController
 class Endpoints {
+    private val databaseHandler: DatabaseHandler
+
+    init {
+        val env: String? = System.getenv("pingu-environment")
+
+        databaseHandler = if (env == "local") {
+            SqliteHandler()
+        } else {
+            DynamoDbHandler()
+        }
+    }
 
     @GetMapping("players")
     fun getPlayers(): List<PlayerModel> {
-        return SqliteHandler().fetchPlayers()
+        return databaseHandler.fetchPlayers()
     }
 
     @GetMapping("matches")
