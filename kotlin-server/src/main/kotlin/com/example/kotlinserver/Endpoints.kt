@@ -43,17 +43,7 @@ class Endpoints {
 
     @PostMapping("match")
     fun postMatch(@RequestBody match: MatchRequest) {
-        if (!MatchResultValidator.validate(match)) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
-        }
-
-        databaseHandler.recordMatch(MatchModel(
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd hh:mm:ss")),
-            match.winner,
-            match.loser,
-            match.winnerScore,
-            match.loserScore
-        ))
+        MatchCreator.createMatch(match)
     }
 
 }
