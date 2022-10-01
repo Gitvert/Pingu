@@ -1,11 +1,24 @@
 package com.example.kotlinserver
 
+import com.example.kotlinserver.database.DatabaseHandler
+import com.example.kotlinserver.database.DatabaseHandlerFactory
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
 class EloCalculator {
     companion object {
         private const val k = 30
+
+        fun getPlayersWithElo(): Map<Int, Player> {
+            val databaseHandler: DatabaseHandler = DatabaseHandlerFactory.getDatabaseHandler()
+
+            val players = databaseHandler.fetchPlayers().associate { it.id to Player(it.id, it.name) }
+            val matches = databaseHandler.fetchMatches().reversed()
+
+            matches.forEach { updateEloRating(players[it.winner]!!, players[it.loser]!!) }
+
+            return players
+        }
 
         fun updateEloRating(winner: Player, loser: Player): Int {
             val probability = calculateProbability(loser.rating, winner.rating)

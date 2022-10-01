@@ -4,7 +4,6 @@ import com.example.kotlinserver.database.DatabaseHandler
 import com.example.kotlinserver.database.DatabaseHandlerFactory
 import com.example.kotlinserver.models.MatchModel
 import com.example.kotlinserver.models.PlayerModel
-import com.example.kotlinserver.models.ScoreboardModel
 import com.example.kotlinserver.requests.MatchRequest
 import com.example.kotlinserver.requests.PlayerRequest
 import org.springframework.http.HttpStatus
@@ -33,18 +32,14 @@ class Endpoints {
     }
 
     @GetMapping("scoreboard")
-    fun getScoreboard(): List<ScoreboardModel> {
-        return listOf(
-            ScoreboardModel(1, "Player1", 1600, 2, 0),
-            ScoreboardModel(1, "Player2", 1500, 1, 1),
-            ScoreboardModel(1, "Player3", 1400, 0, 2),
-        )
+    fun getScoreboard(): List<Player> {
+        return EloCalculator.getPlayersWithElo().values.sortedByDescending { it.rating }
     }
 
     @PostMapping("player")
     fun postPlayer(@RequestBody player: PlayerRequest) {
         databaseHandler.createPlayer(player.name)
-    }
+     }
 
     @PostMapping("match")
     fun postMatch(@RequestBody match: MatchRequest) {
