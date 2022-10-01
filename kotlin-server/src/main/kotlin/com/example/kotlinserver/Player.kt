@@ -15,6 +15,6 @@ class Player (val id: Int, val name: String) {
 
     fun reduceRating(change: Int) {
         rating -= change
-        losses--
+        losses++
     }
 }
