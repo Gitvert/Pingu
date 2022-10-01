@@ -1,5 +1,6 @@
 package com.example.kotlinserver
 
+import com.example.kotlinserver.requests.MatchRequest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

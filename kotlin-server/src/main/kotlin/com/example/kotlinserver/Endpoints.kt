@@ -2,21 +2,17 @@ package com.example.kotlinserver
 
 import com.example.kotlinserver.database.DatabaseHandler
 import com.example.kotlinserver.database.DatabaseHandlerFactory
-import com.example.kotlinserver.database.DynamoDbHandler
-import com.example.kotlinserver.database.SqliteHandler
 import com.example.kotlinserver.models.MatchModel
 import com.example.kotlinserver.models.PlayerModel
 import com.example.kotlinserver.models.ScoreboardModel
-import org.springframework.beans.factory.annotation.Value
+import com.example.kotlinserver.requests.MatchRequest
+import com.example.kotlinserver.requests.PlayerRequest
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.client.HttpClientErrorException.BadRequest
 import org.springframework.web.server.ResponseStatusException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

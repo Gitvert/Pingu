@@ -1,5 +1,7 @@
 package com.example.kotlinserver
 
+import com.example.kotlinserver.requests.MatchRequest
+
 class MatchResultValidator {
 
     companion object {
