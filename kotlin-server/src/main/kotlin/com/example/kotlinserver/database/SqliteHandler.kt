@@ -24,7 +24,24 @@ class SqliteHandler : DatabaseHandler {
     }
 
     override fun fetchMatches(): List<MatchModel> {
-        TODO("Not yet implemented")
+        val connection = connect()
+        val statement: Statement = connection.createStatement()
+        val resultSet: ResultSet = statement.executeQuery("select date, winner, loser, winner_score, loser_score from matches")
+        val matches: MutableList<MatchModel> = mutableListOf()
+
+        while (resultSet.next()) {
+            matches.add(MatchModel(
+                resultSet.getString("date"),
+                resultSet.getInt("winner"),
+                resultSet.getInt("loser"),
+                resultSet.getInt("winner_score"),
+                resultSet.getInt("loser_score"),
+            ))
+        }
+
+        connection.close()
+
+        return matches
     }
 
     override fun fetchPlayerFromId(player: Int): PlayerModel {
