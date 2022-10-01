@@ -37,7 +37,7 @@ class MatchCreator {
 
         private fun recordMatch(match: MatchRequest) {
             DatabaseHandlerFactory.getDatabaseHandler().recordMatch(MatchModel(
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd hh:mm:ss")),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss")),
                 match.winner,
                 match.loser,
                 match.winnerScore,
