@@ -22,6 +22,9 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
 	implementation("org.xerial:sqlite-jdbc:3.39.3.0")
+	implementation("software.amazon.awssdk:bom:2.17.285")
+	implementation("software.amazon.awssdk:dynamodb:2.17.285")
+	implementation("software.amazon.awssdk:dynamodb-enhanced:2.17.285")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
