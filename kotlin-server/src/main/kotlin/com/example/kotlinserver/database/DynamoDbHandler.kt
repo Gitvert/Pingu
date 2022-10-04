@@ -21,18 +21,35 @@ class DynamoDbHandler : DatabaseHandler {
         val request = ScanRequest.builder().tableName("PinguPlayers").build()
         val response = dynamoDbClient.scan(request)
 
-        println(response.items())
+        val players: MutableList<PlayerModel> = mutableListOf()
 
-        return emptyList()
+        response.items().toList().forEach { entries ->
+            players.add(PlayerModel(
+                DynamoDbParser.parseNumberAttribute(entries["id"].toString()),
+                DynamoDbParser.parseStringAttribute(entries["name"].toString())
+            ))
+        }
+
+        return players
     }
 
     override fun fetchMatches(): List<MatchModel> {
         val request = ScanRequest.builder().tableName("PinguMatches").build()
         val response = dynamoDbClient.scan(request)
 
-        println(response.items())
+        val matches: MutableList<MatchModel> = mutableListOf()
 
-        return emptyList()
+        response.items().toList().forEach { entries ->
+            matches.add(MatchModel(
+                DynamoDbParser.parseStringAttribute(entries["date"].toString()),
+                DynamoDbParser.parseNumberAttribute(entries["winner"].toString()),
+                DynamoDbParser.parseNumberAttribute(entries["loser"].toString()),
+                DynamoDbParser.parseNumberAttribute(entries["winner_score"].toString()),
+                DynamoDbParser.parseNumberAttribute(entries["loser_score"].toString()),
+            ))
+        }
+
+        return matches
     }
 
     override fun fetchPlayerFromId(playerId: Int): PlayerModel {
