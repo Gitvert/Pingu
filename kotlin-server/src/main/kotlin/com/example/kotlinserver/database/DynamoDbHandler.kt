@@ -3,14 +3,15 @@ package com.example.kotlinserver.database
 import com.example.kotlinserver.Configuration
 import com.example.kotlinserver.models.MatchModel
 import com.example.kotlinserver.models.PlayerModel
-import org.w3c.dom.Attr
 import software.amazon.awssdk.auth.credentials.InstanceProfileCredentialsProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
-import software.amazon.awssdk.services.dynamodb.model.GetItemRequest
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest
 import software.amazon.awssdk.services.dynamodb.model.ScanRequest
+
+private const val PLAYERS_TABLE_NAME = "PinguPlayers"
+private const val MATCH_TABLE_NAME = "PinguMatches"
 
 class DynamoDbHandler : DatabaseHandler {
 
@@ -30,7 +31,7 @@ class DynamoDbHandler : DatabaseHandler {
 
     override fun fetchPlayers(): List<PlayerModel> {
 
-        val request = ScanRequest.builder().tableName("PinguPlayers").build()
+        val request = ScanRequest.builder().tableName(PLAYERS_TABLE_NAME).build()
         val response = dynamoDbClient.scan(request)
 
         val players: MutableList<PlayerModel> = mutableListOf()
@@ -46,7 +47,7 @@ class DynamoDbHandler : DatabaseHandler {
     }
 
     override fun fetchMatches(): List<MatchModel> {
-        val request = ScanRequest.builder().tableName("PinguMatches").build()
+        val request = ScanRequest.builder().tableName(MATCH_TABLE_NAME).build()
         val response = dynamoDbClient.scan(request)
 
         val matches: MutableList<MatchModel> = mutableListOf()
@@ -75,7 +76,7 @@ class DynamoDbHandler : DatabaseHandler {
             Pair("name", AttributeValue.fromS(name)),
         )
 
-        val request = PutItemRequest.builder().tableName("PinguPlayers").item(attributes).build()
+        val request = PutItemRequest.builder().tableName(PLAYERS_TABLE_NAME).item(attributes).build()
         dynamoDbClient.putItem(request)
     }
 
@@ -88,7 +89,7 @@ class DynamoDbHandler : DatabaseHandler {
             Pair("loser_score", AttributeValue.fromN(match.loserScore.toString())),
         )
 
-        val request = PutItemRequest.builder().tableName("PinguMatches").item(attributes).build()
+        val request = PutItemRequest.builder().tableName(MATCH_TABLE_NAME).item(attributes).build()
         dynamoDbClient.putItem(request)
     }
 }
