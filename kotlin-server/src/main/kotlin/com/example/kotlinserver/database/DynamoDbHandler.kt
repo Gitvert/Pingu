@@ -80,6 +80,15 @@ class DynamoDbHandler : DatabaseHandler {
     }
 
     override fun recordMatch(match: MatchModel) {
-        TODO("Not yet implemented")
+        val attributes = mapOf<String, AttributeValue>(
+            Pair("date", AttributeValue.fromS(match.date)),
+            Pair("winner", AttributeValue.fromN(match.winner.toString())),
+            Pair("loser", AttributeValue.fromN(match.loser.toString())),
+            Pair("winner_score", AttributeValue.fromN(match.winnerScore.toString())),
+            Pair("loser_score", AttributeValue.fromN(match.loserScore.toString())),
+        )
+
+        val request = PutItemRequest.builder().tableName("PinguMatches").item(attributes).build()
+        dynamoDbClient.putItem(request)
     }
 }
