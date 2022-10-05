@@ -46,4 +46,11 @@ class Endpoints {
         MatchCreator.createMatch(match)
     }
 
+    @PostMapping("matches")
+    fun postMatches(@RequestBody matches: List<MatchRequest>) {
+        matches.forEach {
+            MatchCreator.createMatch(it)
+            Thread.sleep(1000) //This delay is needed to retain the correct order of matches
+        }
+    }
 }
