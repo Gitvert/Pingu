@@ -71,9 +71,9 @@ class DynamoDbHandler : DatabaseHandler {
 
     override fun createPlayer(name: String) {
         highestPlayerIndex++
-        val attributes = mapOf<String, AttributeValue>(
-            Pair("id", AttributeValue.fromN(highestPlayerIndex.toString())),
-            Pair("name", AttributeValue.fromS(name)),
+        val attributes = mapOf(
+            Pair("id", numberAttributeValue(highestPlayerIndex)),
+            Pair("name", stringAttributeValue(name)),
         )
 
         val request = PutItemRequest.builder().tableName(PLAYERS_TABLE_NAME).item(attributes).build()
@@ -81,15 +81,23 @@ class DynamoDbHandler : DatabaseHandler {
     }
 
     override fun recordMatch(match: MatchModel) {
-        val attributes = mapOf<String, AttributeValue>(
-            Pair("date", AttributeValue.fromS(match.date)),
-            Pair("winner", AttributeValue.fromN(match.winner.toString())),
-            Pair("loser", AttributeValue.fromN(match.loser.toString())),
-            Pair("winner_score", AttributeValue.fromN(match.winnerScore.toString())),
-            Pair("loser_score", AttributeValue.fromN(match.loserScore.toString())),
+        val attributes = mapOf(
+            Pair("date", stringAttributeValue(match.date)),
+            Pair("winner", numberAttributeValue(match.winner)),
+            Pair("loser", numberAttributeValue(match.loser)),
+            Pair("winner_score", numberAttributeValue(match.winnerScore)),
+            Pair("loser_score", numberAttributeValue(match.loserScore)),
         )
 
         val request = PutItemRequest.builder().tableName(MATCH_TABLE_NAME).item(attributes).build()
         dynamoDbClient.putItem(request)
+    }
+
+    private fun numberAttributeValue(number: Int): AttributeValue {
+        return AttributeValue.fromN(number.toString())
+    }
+    
+    private fun stringAttributeValue(string: String): AttributeValue {
+        return AttributeValue.fromS(string)
     }
 }
