@@ -6,6 +6,8 @@ import com.example.kotlinserver.models.PlayerModel
 import software.amazon.awssdk.auth.credentials.InstanceProfileCredentialsProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue
+import software.amazon.awssdk.services.dynamodb.model.GetItemRequest
 import software.amazon.awssdk.services.dynamodb.model.ScanRequest
 
 class DynamoDbHandler : DatabaseHandler {
@@ -16,6 +18,7 @@ class DynamoDbHandler : DatabaseHandler {
         val provider = InstanceProfileCredentialsProvider.create()
         dynamoDbClient = DynamoDbClient.builder().region(Region.of(Configuration.awsRegion)).credentialsProvider(provider).build()
     }
+
     override fun fetchPlayers(): List<PlayerModel> {
 
         val request = ScanRequest.builder().tableName("PinguPlayers").build()
@@ -53,7 +56,7 @@ class DynamoDbHandler : DatabaseHandler {
     }
 
     override fun fetchPlayerFromId(playerId: Int): PlayerModel {
-        TODO("Not yet implemented")
+        return fetchPlayers().first { it.id == playerId }
     }
 
     override fun createPlayer(name: String) {
