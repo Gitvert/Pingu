@@ -8,6 +8,7 @@
 * ~~Add back to main page navigation item~~
 * ~~Make sure buttons on leaderboard are not hidden below table~~
 * Bulk report of games
+* Numbers in scoreboard
 
 
 ## EC2 instance launch script
