@@ -4,12 +4,14 @@
   <page>
     <table if.bind="showScoreboard" class="table table-light table-striped">
       <tr>
+        <th></th>
         <th>Player</th>
         <th>Wins</th>
         <th>Losses</th>
         <th>Rating</th>
       </tr>
       <tr repeat.for="row of scoreboard">
+        <td>${$index + 1}.</td>
         <td>${row.name}</td>
         <td>${row.wins}</td>
         <td>${row.losses}</td>
