@@ -3,20 +3,29 @@ package com.example.kotlinserver.database
 import com.example.kotlinserver.Configuration
 import com.example.kotlinserver.models.MatchModel
 import com.example.kotlinserver.models.PlayerModel
+import org.w3c.dom.Attr
 import software.amazon.awssdk.auth.credentials.InstanceProfileCredentialsProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest
+import software.amazon.awssdk.services.dynamodb.model.PutItemRequest
 import software.amazon.awssdk.services.dynamodb.model.ScanRequest
 
 class DynamoDbHandler : DatabaseHandler {
 
     private val dynamoDbClient: DynamoDbClient
+    private var highestPlayerIndex = -1
 
     init {
         val provider = InstanceProfileCredentialsProvider.create()
         dynamoDbClient = DynamoDbClient.builder().region(Region.of(Configuration.awsRegion)).credentialsProvider(provider).build()
+
+        fetchPlayers().forEach {
+            if (it.id > highestPlayerIndex) {
+                highestPlayerIndex = it.id
+            }
+        }
     }
 
     override fun fetchPlayers(): List<PlayerModel> {
@@ -60,7 +69,14 @@ class DynamoDbHandler : DatabaseHandler {
     }
 
     override fun createPlayer(name: String) {
-        TODO("Not yet implemented")
+        highestPlayerIndex++
+        val attributes = mapOf<String, AttributeValue>(
+            Pair("id", AttributeValue.fromN(highestPlayerIndex.toString())),
+            Pair("name", AttributeValue.fromS(name)),
+        )
+
+        val request = PutItemRequest.builder().tableName("PinguPlayers").item(attributes).build()
+        dynamoDbClient.putItem(request)
     }
 
     override fun recordMatch(match: MatchModel) {
