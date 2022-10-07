@@ -62,7 +62,7 @@ class DynamoDbHandler : DatabaseHandler {
             ))
         }
 
-        return matches
+        return matches.sortedByDescending { it.date }
     }
 
     override fun fetchPlayerFromId(playerId: Int): PlayerModel {
