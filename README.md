@@ -16,11 +16,15 @@
 ```shell
 #!/bin/bash
 sudo yum update -y
+
+### Web server
 sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
 sudo yum install -y httpd
 cd /var/www/html
 sudo aws s3 sync s3://pingu-files/web/ ./
 sudo systemctl start httpd
+
+### TypeScript server
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -33,4 +37,16 @@ sudo mkdir server
 cd server/
 sudo aws s3 sync s3://pingu-files/server/ ./
 node pingu.js
+
+### Kotlin server
+cd /usr/
+sudo mkdir pingu
+cd pingu/
+sudo mkdir server
+cd server/
+wget https://download.oracle.com/java/18/latest/jdk-18_linux-x64_bin.rpm
+sudo rpm -Uvh jdk-18_linux-x64_bin.rpm
+sudo aws s3 sync s3://pingu-files/kotlin-server/ ./
+java -jar kotlin-server-1.0.jar
+
 ```
