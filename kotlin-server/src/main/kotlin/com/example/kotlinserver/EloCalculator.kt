@@ -32,7 +32,7 @@ class EloCalculator {
         }
 
         private fun calculateProbability(rating1: Int, rating2: Int): Double {
-            return 1 / (1 + 1 * (10.0.pow(1.0 * (rating1 - rating2) / 400)))
+            return 1.0 / (1.0 + (10.0.pow((rating1 - rating2) / 400.0)))
         }
     }
 }
