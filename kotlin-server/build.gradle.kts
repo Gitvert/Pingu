@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.example"
-version = "0.0.1-SNAPSHOT"
+version = "1.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -24,7 +24,6 @@ dependencies {
 	implementation("org.xerial:sqlite-jdbc:3.39.3.0")
 	implementation("software.amazon.awssdk:bom:2.17.285")
 	implementation("software.amazon.awssdk:dynamodb:2.17.285")
-	implementation("software.amazon.awssdk:dynamodb-enhanced:2.17.285")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
