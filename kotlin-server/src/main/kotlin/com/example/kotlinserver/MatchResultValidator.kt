@@ -6,19 +6,11 @@ class MatchResultValidator {
 
     companion object {
         fun validate(match: MatchRequest): Boolean {
-            if (!validateInput(match)) {
-                return false
-            }
-
-            if (match.winner == match.loser) {
-                return false
-            }
-
-            return validateScore(match)
+            return validateInput(match) && validateScore(match)
         }
 
         private fun validateInput(match: MatchRequest): Boolean {
-            return match.winner >= 0 && match.loser >= 0
+            return match.winner >= 0 && match.loser >= 0 && match.winner != match.loser
         }
 
         private fun validateScore(match: MatchRequest): Boolean {
