@@ -18,7 +18,7 @@ class MatchResultValidator {
         }
 
         private fun validateInput(match: MatchRequest): Boolean {
-            return match.winner > 0 && match.loser > 0
+            return match.winner >= 0 && match.loser >= 0
         }
 
         private fun validateScore(match: MatchRequest): Boolean {

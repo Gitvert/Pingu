@@ -36,4 +36,9 @@ internal class MatchResultValidatorTest {
     fun winner_same_as_loser_should_not_be_valid() {
         assertFalse(MatchResultValidator.validate(MatchRequest(1, 1, 11, 9)))
     }
+
+    @Test
+    fun player_id_0_should_be_valid() {
+        assertTrue(MatchResultValidator.validate(MatchRequest(0, 2, 11, 5)))
+    }
 }
