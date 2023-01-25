@@ -2,6 +2,13 @@
   <require from="../../components/page"></require>
 
   <page>
+
+    <div class="center">
+      <select id="year" value.bind="selectedYear" required>
+        <option repeat.for="year of years">${year}</option>
+      </select>
+    </div>
+
     <table if.bind="showScoreboard" class="table table-light table-striped">
       <tr>
         <th></th>

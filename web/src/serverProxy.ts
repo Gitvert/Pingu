@@ -33,8 +33,8 @@ export class ServerProxy {
     return (await axios.get(`${serverHost}/players`)).data as Player[];
   }
 
-  static async getScoreboard(): Promise<ScoreboardRow[]> {
-    return (await axios.get(`${serverHost}/scoreboard`)).data as ScoreboardRow[];
+  static async getScoreboard(year: number): Promise<ScoreboardRow[]> {
+    return (await axios.get(`${serverHost}/scoreboard`, {params: {year}})).data as ScoreboardRow[];
   }
 
   static async postMatch(winner: number, loser: number, winnerScore: number, loserScore: number): Promise<void> {
