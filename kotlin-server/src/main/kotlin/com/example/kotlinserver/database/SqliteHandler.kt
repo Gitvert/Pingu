@@ -3,6 +3,8 @@ package com.example.kotlinserver.database
 import com.example.kotlinserver.models.MatchModel
 import com.example.kotlinserver.models.PlayerModel
 import java.sql.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class SqliteHandler : DatabaseHandler {
     override fun fetchPlayers(): List<PlayerModel> {
@@ -20,7 +22,7 @@ class SqliteHandler : DatabaseHandler {
         return players
     }
 
-    override fun fetchMatches(): List<MatchModel> {
+    override fun fetchMatches(from: LocalDate, to: LocalDate): List<MatchModel> {
         val connection = connect()
         val statement: Statement = connection.createStatement()
         val resultSet: ResultSet = statement.executeQuery("select date, winner, loser, winner_score, loser_score from matches order by date desc")
@@ -37,8 +39,10 @@ class SqliteHandler : DatabaseHandler {
         }
 
         connection.close()
-
+        
         return matches
+            .filter { LocalDate.parse(it.date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).isAfter(from) }
+            .filter { LocalDate.parse(it.date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).isBefore(to) }
     }
 
     override fun fetchPlayerFromId(playerId: Int): PlayerModel {

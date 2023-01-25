@@ -6,15 +6,9 @@ import com.example.kotlinserver.models.MatchModel
 import com.example.kotlinserver.models.PlayerModel
 import com.example.kotlinserver.requests.MatchRequest
 import com.example.kotlinserver.requests.PlayerRequest
-import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.server.ResponseStatusException
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
+import java.time.temporal.TemporalAdjusters
 
 @CrossOrigin
 @RestController
@@ -28,12 +22,17 @@ class Endpoints {
 
     @GetMapping("matches")
     fun getMatches(): List<MatchModel> {
-        return databaseHandler.fetchMatches()
+        return databaseHandler.fetchMatches(
+            LocalDate.now().minusYears(100), 
+            LocalDate.now().with(TemporalAdjusters.lastDayOfYear())
+        )
     }
 
     @GetMapping("scoreboard")
-    fun getScoreboard(): List<Player> {
-        return EloCalculator.getPlayersWithElo().values.sortedByDescending { it.rating }
+    fun getScoreboard(@RequestParam(name = "year") yearString: String): List<Player> {
+        val year = LocalDate.of(yearString.toInt(), 1, 1)
+        
+        return EloCalculator.getPlayersWithElo(year).values.sortedByDescending { it.rating }.filter { it.wins + it.losses > 0 }
     }
 
     @PostMapping("player")

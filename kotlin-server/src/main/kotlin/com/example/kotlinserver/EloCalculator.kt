@@ -2,6 +2,10 @@ package com.example.kotlinserver
 
 import com.example.kotlinserver.database.DatabaseHandler
 import com.example.kotlinserver.database.DatabaseHandlerFactory
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.temporal.TemporalAdjusters.firstDayOfYear
+import java.time.temporal.TemporalAdjusters.lastDayOfYear
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
@@ -9,11 +13,14 @@ class EloCalculator {
     companion object {
         private const val k = 30
 
-        fun getPlayersWithElo(): Map<Int, Player> {
+        fun getPlayersWithElo(year: LocalDate): Map<Int, Player> {
             val databaseHandler: DatabaseHandler = DatabaseHandlerFactory.getDatabaseHandler()
 
             val players = databaseHandler.fetchPlayers().associate { it.id to Player(it.id, it.name) }
-            val matches = databaseHandler.fetchMatches().reversed()
+            val matches = databaseHandler.fetchMatches(
+                year.with(firstDayOfYear()), 
+                year.with(lastDayOfYear())
+            ).reversed()
 
             matches.forEach { updateEloRating(players[it.winner]!!, players[it.loser]!!) }
 

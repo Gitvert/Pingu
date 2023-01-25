@@ -9,6 +9,8 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest
 import software.amazon.awssdk.services.dynamodb.model.ScanRequest
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 private const val PLAYERS_TABLE_NAME = "PinguPlayers"
 private const val MATCH_TABLE_NAME = "PinguMatches"
@@ -46,7 +48,7 @@ class DynamoDbHandler : DatabaseHandler {
         return players
     }
 
-    override fun fetchMatches(): List<MatchModel> {
+    override fun fetchMatches(from: LocalDate, to: LocalDate): List<MatchModel> {
         val request = ScanRequest.builder().tableName(MATCH_TABLE_NAME).build()
         val response = dynamoDbClient.scan(request)
 
@@ -62,7 +64,10 @@ class DynamoDbHandler : DatabaseHandler {
             ))
         }
 
-        return matches.sortedByDescending { it.date }
+        return matches
+            .filter { LocalDate.parse(it.date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).isAfter(from) }
+            .filter { LocalDate.parse(it.date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).isBefore(to) }
+            .sortedByDescending { it.date }
     }
 
     override fun fetchPlayerFromId(playerId: Int): PlayerModel {

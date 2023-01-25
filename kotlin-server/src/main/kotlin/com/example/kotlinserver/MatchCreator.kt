@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.server.ResponseStatusException
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -31,7 +32,7 @@ class MatchCreator {
         }
 
         private fun calculateRatingChange(match: MatchRequest): Int {
-            val players = EloCalculator.getPlayersWithElo()
+            val players = EloCalculator.getPlayersWithElo(LocalDate.now())
             return EloCalculator.updateEloRating(players[match.winner]!!, players[match.loser]!!)
         }
 
