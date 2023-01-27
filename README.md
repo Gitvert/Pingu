@@ -30,8 +30,9 @@ sudo mkdir pingu
 cd pingu/
 sudo mkdir server
 cd server/
-wget https://download.oracle.com/java/18/latest/jdk-18_linux-x64_bin.rpm
-sudo rpm -Uvh jdk-18_linux-x64_bin.rpm
+sudo rpm --import https://yum.corretto.aws/corretto.key 
+sudo curl -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo
+sudo yum install -y java-18-amazon-corretto-devel
 sudo aws s3 sync s3://pingu-files/kotlin-server/ ./
 java -jar kotlin-server-1.0.jar
 ```
